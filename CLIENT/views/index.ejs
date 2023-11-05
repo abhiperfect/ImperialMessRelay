@@ -1,0 +1,18 @@
+<%- include("partials/header.ejs") %>    
+
+<div class="indexContainer">
+    <div class="post-box">
+    <% allPost.forEach((item) => { %>
+        <div class="card post" style="width: 24rem;">
+            <img class="card-img-top" src="<%= item.photo %>" alt="Card image cap">
+            <div class="card-body">
+            <h5 class="card-title"><%= item.postedby.name%></h5>
+            <h5 class="card-title"><%= item.title %></h5>
+            <p class="card-text"><%= item.body %></p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+        </div>
+    <% }) %>
+    </div>
+</div>
+<%- include("partials/footer.ejs") %> 

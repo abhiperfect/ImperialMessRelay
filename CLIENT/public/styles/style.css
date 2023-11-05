@@ -1,0 +1,97 @@
+:root{
+    --color-type-1-900: rgba(0, 119, 255);
+    --color-type-2-900: rgba(0, 255, 255);
+}
+
+/* ------- NAVBAR ------- */
+.my-navbar{
+    background-color: rgb(159, 210, 212) !important;
+}
+
+
+.indexContainer{
+    font-family: 'Montserrat', sans-serif;
+    color: aliceblue;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    /* height: 100vh; */
+    width: 100%;
+    overflow-y: hidden;
+    background-image: linear-gradient(0deg, rgba(0, 255, 255, 0.8), rgba(0, 119, 255, 0.8)), url("//images01.nicepagecdn.com/c461c07a441a5d220e8feb1a/46e8bacfa13d5e5ab7947ff9/-min.jpg");
+}
+.post{
+    margin: 10px auto;
+}
+.post-box{
+    margin-top: 5%;
+}
+.container1{
+    margin-top: 200px;
+    height: 50%;
+    width: 60%;
+    text-align: center;
+    /* background-color: aqua; */
+}
+.container1 h4{
+    font-family:'Courier New', Courier, monospace;
+    font-weight: 500;
+    margin-top: 20px;
+}
+.users{
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.user{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 12px;
+    height: 50px;
+    width: 150px;
+    font-weight: bold;
+    /* font-size: 20px; */
+    border-radius: 25px;
+    border: 2px solid white;
+
+}
+.user:hover{
+    color: rgb(29, 26, 26);
+    background-color: aliceblue;
+   font-weight: bolder;
+    cursor: pointer;
+}
+
+/* =======================================
+--------------- SIGN UP ------------------
+======================================= */
+
+.signup{
+    max-width: 70%;
+    border: 2px solid rgba(0, 119, 255, 0.8);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+
+/* -------- LOG IN ---------- */
+
+.divider:after,
+.divider:before {
+content: "";
+flex: 1;
+height: 1px;
+background: #eee;
+}
+.h-custom {
+height: calc(100% - 73px);
+}
+@media (max-width: 450px) {
+.h-custom {
+height: 100%;
+}
+}
