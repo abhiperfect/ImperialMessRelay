@@ -1,15 +1,32 @@
 <%- include("partials/header.ejs") %>    
 
 <div class="indexContainer">
-    <div class="post-box">
+    <div class="mt-5 mt-5">
     <% allPost.forEach((item) => { %>
-        <div class="card post" style="width: 24rem;">
-            <img class="card-img-top" src="<%= item.photo %>" alt="Card image cap">
-            <div class="card-body">
+        <div class="card mb-3 p-3 m-1" style="width: 24rem; height: fit-content;">
             <h5 class="card-title"><%= item.postedby.name%></h5>
-            <h5 class="card-title"><%= item.title %></h5>
-            <p class="card-text"><%= item.body %></p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+            <h6 class="card-title"><%= item.postedby.hostel%></h6>
+            <img style="height: 20rem" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7RbuAj7zoRZSIDcV_nz2LyZZjwiOETmn7kg&usqp=CAU" alt="..." >
+            <div class="card-body">
+              <p class="card-button container"> 
+                <div class="row align-items-start">
+                    <div class="col-6">
+                        <button class="btn btn-block btn-primary"><i class="fa fa-arrow-up"></i> Upvote</button>
+                    </div>
+                    <div class="col-6">
+                        <button class="btn btn-block btn-primary col-1"><i class="fa fa-arrow-down"></i> Downvote</button> 
+                    </div>
+                </div>  
+              </p>
+              <h5 class="card-title"><%= item.title %></h5>
+              <p class="card-text"><%= item.body %></p>
+              <input type="checkbox" id="ch">
+              <p class="card-text"><small class="text-muted">Comments</small></p>
+              <p class="card-text more-comments"><small class="text-muted">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo nesciunt deleniti magni, provident laborum voluptates distinctio dicta amet rem, maxime iusto aspernatur culpa velit, accusantium error corrupti! Qui, natus blanditiis!</small>
+                <label for="ch">Show less</label>
+              </p>
+              <label for="ch">Read more</label>
             </div>
         </div>
     <% }) %>

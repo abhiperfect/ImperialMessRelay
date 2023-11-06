@@ -8,6 +8,18 @@
     background-color: rgb(159, 210, 212) !important;
 }
 
+/* --------- FOR COMMENTS OF THE POSTS ----------- */
+#ch{
+    display: none;
+}
+#ch:checked ~ .more-comments{
+    display: block;
+}
+.more-comments{
+    display: none;
+}
+
+
 
 .indexContainer{
     font-family: 'Montserrat', sans-serif;
