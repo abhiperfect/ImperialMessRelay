@@ -23,18 +23,26 @@ router.get("/mypost", async (req, res) => {
 })
 
 //-----   CREATING A NEW POST (ONLY BY ROLE == STUDENT)   -----
+router.get("/createpost", (req, res) => {
+    res.render("createpost");
+})
+
+
+
 router.post("/createpost",authrole(["student"]) , async (req, res) => {
     if(req.isAuthenticated()){
-        console.log(req);
-        const newPost = new postModel({
-            title: req.body.title,
-            body: req.body.body,
-            postedby: req.user.id
-        });
-        newPost.save();
+        // console.log(req);
+        // const newPost = new postModel({
+        //     title: req.body.title,
+        //     body: req.body.body,
+        //     postedby: req.user.id
+        // });
+        // newPost.save();
+        res.render("newpost");
     }
     else{
-        res.status(401).send({"error": "login first"});
+        // res.status(401).send({"error": "login first"});
+        res.render("newpost");
     }
 });
 

@@ -46,7 +46,6 @@ router.get("/signup", (req, res) => {
 
 router.post("/signup", (req, res)=>{
   const {name, email, hostel, room, gender} = req.body;
-  console.log(req.body);
   userModel.register({ name: name, email: email, hostel: hostel, room: room, gender: gender}, req.body.password, async (err, user)=>{
     if(err){
         console.log(err);
@@ -82,7 +81,7 @@ router.post("/login", async (req, res) => {
           }
           else{
               passport.authenticate("local")(req, res, ()=>{
-                  res.send("logged in");
+                  res.redirect("/");
               });
           }
       }
