@@ -3,9 +3,10 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const {authrole} = require("../middlewares/authrole")
 const postModel = mongoose.model("postModel"); 
+const cloudinary = require("../api/imageupload");
 
 
-//------------------    SHOW ALL POST   ------------------------
+//============== SHOW ALL POST =====================
 
 router.get("/allpost", async (req, res) => {
     res.send(await postModel.find().populate("postedby"));
@@ -24,21 +25,38 @@ router.get("/mypost", async (req, res) => {
 
 //-----   CREATING A NEW POST (ONLY BY ROLE == STUDENT)   -----
 router.get("/createpost", (req, res) => {
-    res.render("createpost");
+    if(req.isAuthenticated()){
+        res.render("createpost");
+    }
+    else{
+        res.redirect("/login");
+    }
 })
 
 
-
 router.post("/createpost",authrole(["student"]) , async (req, res) => {
+    console.log("dfd");
     if(req.isAuthenticated()){
-        // console.log(req);
-        // const newPost = new postModel({
-        //     title: req.body.title,
-        //     body: req.body.body,
-        //     postedby: req.user.id
-        // });
-        // newPost.save();
-        res.render("newpost");
+        const posttitle = req.body.posttitle;
+        const postbody = req.body.postbody;
+        const postimagefile = req.files.postimage;
+
+        cloudinary.uploader.upload(String(postimagefile.tempFilePath), { public_id: req.user.name },
+            function(error, result) {
+                if(error){ console.log(error); }
+                const post = new postModel({
+                    title: posttitle,
+                    body: postbody,
+                    photo: result.secure_url,
+                    postedby: req.user.id,
+                    upvote: [],
+                    downvote: [], 
+                    comment: []
+                });
+                post.save(); 
+            }
+        );
+        res.redirect("/");
     }
     else{
         // res.status(401).send({"error": "login first"});

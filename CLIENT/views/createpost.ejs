@@ -2,23 +2,23 @@
 
 <div class="indexContainer">
     <div class="post-box" style="min-height: 100vh; min-width: 70%;">
-    <form action="/signup" method="post" class="mt-9">
+    <form action="/createpost" method="post" enctype="multipart/form-data" class="mt-9">
         <div class="input-group mb-5">
             <div class="input-group-prepend">
               <span class="input-group-text" id="inputGroup-sizing-default">Default</span>
             </div>
-            <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+            <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" name="posttitle">
           </div>
 
           <div class="input-group mb-5">
             <div class="input-group-prepend">
               <span class="input-group-text" id="inputGroup-sizing-default">Default</span>
             </div>
-            <textarea type="text" class="form-control" style="min-height: 100px;" aria-label="Default" aria-describedby="inputGroup-sizing-default"></textarea>
+            <textarea type="text" class="form-control" style="min-height: 100px;" aria-label="Default" aria-describedby="inputGroup-sizing-default" name="postbody"></textarea>
           </div>
 
           <div class="input-group mb-5 w-100">
-            <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload" />
+            <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload" accept=".jpg, .jpeg, .png" name="postimage"/>
             <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">
               Button
             </button>

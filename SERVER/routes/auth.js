@@ -40,20 +40,23 @@ passport.deserializeUser(function(user, cb) {
 //--------------  SIGN UP ROUTE -----------------
 router.get("/signup", (req, res) => {
   res.render("auth/signup",{
-    user: req.query.user
+    user: req.query.user,
+    toastvalue: ""
   });
 })
 
 router.post("/signup", (req, res)=>{
-  const {name, email, hostel, room, gender} = req.body;
-  userModel.register({ name: name, email: email, hostel: hostel, room: room, gender: gender}, req.body.password, async (err, user)=>{
+  const {name, email, hostel, room, gender, role} = req.body;
+  userModel.register({ name: name, email: email, hostel: hostel, room: room, gender: gender, role: role}, req.body.password, async (err, user)=>{
     if(err){
-        console.log(err);
-        return res.status(422).json({error: "user already exists"});
+        res.render("auth/signup", {
+          toastvalue: "show",
+          user: req.user
+        })
     } 
     else{
         passport.authenticate("local")(req, res, () => {
-            return res.status(200).json({msg: "signed up"});
+            res.redirect("/");
         })
     }
   })
