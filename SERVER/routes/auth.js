@@ -1,17 +1,16 @@
 const express = require("express");
-const mongoose = require("mongoose");
-const router = express.Router();
-const passport = require("passport");
-const session = require("express-session");
+const mongoose = require("mongoose"); //databse
+const router = express.Router();        //routes
+const passport = require("passport");    //Authentication
+const session = require("express-session");  
 var _ = require("lodash");
 require("../models/user");
 var bodyParser = require("body-parser");
 const userModel = mongoose.model("userModel");
 
-
 express().locals._ = _;
 router.use(session({
-    secret: process.env.SESSION_SECRET,
+    secret: "abcd",
     resave: false,
     saveUninitialized: false
 }))
@@ -19,7 +18,8 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.use(express.json());
 router.use(passport.initialize());
 router.use(passport.session());
-passport.use(userModel.createStrategy());
+passport.use(userModel.createStrategy()); //Stratgy to create local authentication by programmer
+
 
 passport.serializeUser(function(user, cb) {
   process.nextTick(function() {
@@ -53,7 +53,7 @@ router.post("/signup", (req, res)=>{
     } 
     else{
         passport.authenticate("local")(req, res, () => {
-            return res.status(200).json({msg: "signed up"});
+          res.redirect("/");
         })
     }
   })

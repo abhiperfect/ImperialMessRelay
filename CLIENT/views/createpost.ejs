@@ -1,34 +1,57 @@
-<%- include("partials/header.ejs") %>    
+<%- include("partials/header.ejs") %>
 
-<div class="indexContainer">
-    <div class="post-box" style="min-height: 100vh; min-width: 70%;">
-    <form action="/signup" method="post" class="mt-9">
-        <div class="input-group mb-5">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id="inputGroup-sizing-default">Default</span>
-            </div>
-            <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+
+
+  <%- include("partials/header.ejs") %>    
+
+  <div class="indexContainer">
+      <!-- <div class="mt-5 mt-5"> -->
+        <div class="container">
+
+          <div class="post-details">
+      
+            <form action="/posted" method="post">
+              <div class="user-data">
+                <img src="/images/profile.jpg" alt="Profile-Photo" id="profile">
+      
+                <div class="user-create-post">
+                  <div class="name"> Raju Rastogi</div>
+                  <div class="access">
+                    <select name="title" class="access-contain">
+                      <option value="Public">Public</option>
+                      <option value="Dining">Dining Companions</option>
+                      <option value="Chief">Chief Warden</option>
+                    </select>
+                  </div>
+                </div>
+      
+              </div>
+              <div class="post-contain">
+                <textarea id="review" name="body" rows="4" cols="50"
+                  class="description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatum eaque ut harum alias natus tempora hic labore, aut minima explicabo autem nemo, soluta numquam! Amet architecto reiciendis adipisci officiis doloribus.</textarea>
+      
+                <div class="bottom-container">
+                  <input type="file" id="myFile" name="photo" class="file">
+                  <label id="file-input-label" for="myFile">Select a File
+                    <span class="material-symbols-outlined">
+                      image
+                    </span>
+                  </label>
+      
+                  <div class="post-create-post">
+                    <input type="submit" id="submit" class="submit-btn" value="Post">
+                    <!-- <span class="material-symbols-outlined post-icon" for="submit"> send</span> -->
+                  </div>
+      
+      
+                </div>
+              </div>
+            </form>
           </div>
-
-          <div class="input-group mb-5">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id="inputGroup-sizing-default">Default</span>
-            </div>
-            <textarea type="text" class="form-control" style="min-height: 100px;" aria-label="Default" aria-describedby="inputGroup-sizing-default"></textarea>
-          </div>
-
-          <div class="input-group mb-5 w-100">
-            <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload" />
-            <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">
-              Button
-            </button>
-          </div>
-
-      <div class="d-flex justify-content-center">
-        <button class="w-300 btn btn-primary" type="submit">post</button>
-      </div>
-    </form>
-    </div>
+      
+        </div>
+          
+      <!-- </div> -->
   </div>
-
-<%- include("partials/footer.ejs") %> 
+  <%- include("partials/footer.ejs") %> 
+  <%- include("partials/footer.ejs") %>

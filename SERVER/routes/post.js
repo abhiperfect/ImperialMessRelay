@@ -3,6 +3,7 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const {authrole} = require("../middlewares/authrole")
 const postModel = mongoose.model("postModel"); 
+const PostModel = require("../models/post");
 
 
 //------------------    SHOW ALL POST   ------------------------
@@ -23,28 +24,34 @@ router.get("/mypost", async (req, res) => {
 })
 
 //-----   CREATING A NEW POST (ONLY BY ROLE == STUDENT)   -----
-router.get("/createpost", (req, res) => {
+router.get("/createpost", async(req, res) => {
+    
     res.render("createpost");
 })
 
-
-
-router.post("/createpost",authrole(["student"]) , async (req, res) => {
+// Checking create route
+router.post("/posted",async (req, res)=>{
+    console.log(req.body);
     if(req.isAuthenticated()){
-        // console.log(req);
-        // const newPost = new postModel({
-        //     title: req.body.title,
-        //     body: req.body.body,
-        //     postedby: req.user.id
-        // });
-        // newPost.save();
-        res.render("newpost");
+    const author = new postModel({
+        title: req.body.title,
+        body: req.body.body,
+        photo: req.body.photo,
+        postedby: req.user.id,
+    })
+    author.save().then(async item => {
+        const allPost = await postModel.find().populate("postedby").exec();
+        res.render("index",{
+            allPost: allPost
+        })    
+    })
     }
     else{
-        // res.status(401).send({"error": "login first"});
-        res.render("newpost");
+        res.status(401).send({"error": "login first"});
+        res.render("createpost");
     }
 });
+
 
 //-------------- DELETING THE POST -----------------
 
