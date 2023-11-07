@@ -34,8 +34,8 @@ router.get("/createpost", (req, res) => {
 })
 
 
+
 router.post("/createpost",authrole(["student"]) , async (req, res) => {
-    console.log("dfd");
     if(req.isAuthenticated()){
         const posttitle = req.body.posttitle;
         const postbody = req.body.postbody;
@@ -59,10 +59,11 @@ router.post("/createpost",authrole(["student"]) , async (req, res) => {
         res.redirect("/");
     }
     else{
-        // res.status(401).send({"error": "login first"});
-        res.render("newpost");
+        res.status(401).send({"error": "login first"});
+        res.render("createpost");
     }
 });
+
 
 //-------------- DELETING THE POST -----------------
 

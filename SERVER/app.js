@@ -8,7 +8,7 @@ require("./models/user");
 require("./models/post")
 
 const app = express();
-
+const port = 3000;
 app.set("view engine", "ejs");
 app.set("views", ("../CLIENT/views"));
 app.use(express.static(path.join(__dirname,  "../", "/CLIENT/public")));
@@ -31,6 +31,6 @@ app.get("/", async (req, res) => {
     })
 })
 
-app.listen(process.env.PORT, ()=>{
+app.listen(port, ()=>{
     console.log("Server running.....");
 });
