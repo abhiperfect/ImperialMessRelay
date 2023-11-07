@@ -1,12 +1,12 @@
 <%- include("partials/header.ejs") %>    
 
 <div class="indexContainer">
-    <div class="mt-5 mt-5">
+    <div class="mt-5">
     <% allPost.forEach((item) => { %>
         <div class="card mb-3 p-3 m-1" style="width: 24rem; height: fit-content;">
             <h5 class="card-title"><%= item.postedby.name%></h5>
             <h6 class="card-title"><%= item.postedby.hostel%></h6>
-            <img style="height: 20rem" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7RbuAj7zoRZSIDcV_nz2LyZZjwiOETmn7kg&usqp=CAU" alt="..." >
+            <img style="height: 20rem" src="<%= item.photo %>" alt="..." >
             <div class="card-body">
               <p class="card-button container"> 
                 <div class="row align-items-start">

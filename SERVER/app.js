@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 var path = require("path");
+const fileUpload = require("express-fileupload");
 require("dotenv").config();
 require("./models/user");
 require("./models/post")
@@ -12,7 +13,8 @@ app.set("view engine", "ejs");
 app.set("views", ("../CLIENT/views"));
 app.use(express.static(path.join(__dirname,  "../", "/CLIENT/public")));
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(fileUpload({useTempFiles: true}));
 app.use(require("./routes/auth"));
 app.use(require("./routes/post"));
 app.use(require("./routes/profile"));
