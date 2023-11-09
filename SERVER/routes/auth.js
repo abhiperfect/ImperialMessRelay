@@ -2,11 +2,13 @@ const express = require("express");
 const mongoose = require("mongoose"); //databse
 const router = express.Router();        //routes
 const passport = require("passport");    //Authentication
-const session = require("express-session");  
+const session = require("express-session");
+const path = require("path");  
 var _ = require("lodash");
 require("../models/user");
 var bodyParser = require("body-parser");
 const userModel = mongoose.model("userModel");
+const cloudinary = require("../api/imageupload");
 
 express().locals._ = _;
 router.use(session({
@@ -41,16 +43,36 @@ passport.deserializeUser(function(user, cb) {
 router.get("/signup", (req, res) => {
   res.render("auth/signup",{
     user: req.query.user,
-    toastvalue: ""
+    toastvalue: "",
+    msg: ""
   });
 })
 
-router.post("/signup", (req, res)=>{
+router.post("/signup", async (req, res)=>{
   const {name, email, hostel, room, gender, role} = req.body;
-  userModel.register({ name: name, email: email, hostel: hostel, room: room, gender: gender, role: role}, req.body.password, async (err, user)=>{
+  var profileimageURL;
+  if(!req.files){
+    profileimageURL = "../images/dummyprofilepic.png";
+  }else{
+    var profileimage = req.files.profileimage;
+    profileimageURL = new Promise((resolve, rejct) => {
+      cloudinary.uploader.upload(String(profileimage.tempFilePath),
+        function(error, result) {
+          if(error){
+            console.log(error);
+          }
+          resolve(result.secure_url);
+        }
+      );
+    })
+
+    profileimageURL = await profileimageURL;
+  }
+  userModel.register({ name: name, email: email, hostel: hostel, room: room, gender: gender, role: role, profilephoto: profileimageURL}, req.body.password, async (err, user)=>{
     if(err){
         res.render("auth/signup", {
           toastvalue: "show",
+          msg: "Email already exists.",
           user: req.user
         })
     } 
@@ -65,7 +87,17 @@ router.post("/signup", (req, res)=>{
 
 //--------------- SIGN IN ROUTE ------------------
 router.get("/login", (req, res) => {
-  res.render("auth/login");
+  if(req.session.messages){
+    res.render("auth/login",{
+      toastvalue: "show",
+      msg: "Incorrect password"
+    });
+  }else{
+    res.render("auth/login",{
+      toastvalue: "",
+      msg: ""
+    });
+  }
 })
 
 
@@ -80,10 +112,14 @@ router.post("/login", async (req, res) => {
       }else{
           const curUser = await userModel.findOne({email: user.email});
           if(!curUser){
-              res.status(422).send({"error": "Email not registered"});
+              res.render("auth/signup", {
+                toastvalue: "show",
+                msg: "Sign up first.",
+                user: req.user
+              })
           }
           else{
-              passport.authenticate("local")(req, res, ()=>{
+              passport.authenticate("local", { failureRedirect: '/login', failureMessage: true })(req, res, ()=>{
                   res.redirect("/");
               });
           }
@@ -99,7 +135,7 @@ router.post("/logout", (req, res) => {
       if (err) { 
           console.log(err);
        }
-      res.send("logged out");
+      res.status(200).redirect("/");
   });
 });
 

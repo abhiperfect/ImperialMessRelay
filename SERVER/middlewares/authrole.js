@@ -1,6 +1,5 @@
 const authrole = (permissions) => {
     return (req, res, next) => {
-        console.log(req.user);
         const userRole = req.user.role;
         if(permissions.includes(userRole)){
             next();
