@@ -1,5 +1,75 @@
 <%- include("partials/header.ejs") %>    
 
+
+<% if(user == "notAuthenticated"){ %>
+
+<div class="indexContainer">
+    <div class="container mt-5 home-container" style="min-height: 100vh;">
+      <div class="row d-flex justify-content-between p-2 main-first">
+          <div class="col-5">
+            <img src=".././images/ratatouille.png" alt="no image" class="img-fluid">
+          </div>
+          <div class="col-5 main-first-content">
+            <div class="text-white">
+              <h1 class="mb-1 mt-5">Mess</h1>
+              <div class="d-flex">
+                <h1 class="mb-3" style="color: yellow">Complaint</h1>&nbsp;&nbsp;
+                <h1 class="mb-3">Portal</h1>
+              </div>
+              <p class="mb-4">let your complaint reach to the other students, highlighted by upvoting by other students and let it reach to the cheif warden to solve it faster.</p>
+
+              <!-- <div class="col-4"> -->
+                <a class="btn btn-outline-light btn-lg" href="/signup" role="button" aria-expanded="false">
+                  Sign up
+                </a>
+              <!-- </div> -->
+              <div class="dropdown">
+                <a class="btn btn-outline-light btn-lg" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  login
+                </a>
+                <div class="dropdown-content bg-transparent">
+                  <a class="dropdown-item" href="/login/?user=accountant" role="button">Student</a>
+                  <a class="dropdown-item" href="/login/?user=chiefwarden" role="button">Chief Warden</a>
+                  <a class="dropdown-item" href="/login/?user=developer" role="button">Developer</a>
+                  <a class="dropdown-item" href="/login/?user=student" role="button">Accountant</a>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+      <div class="row mb-5 main-second justify-content-center">
+        <div class="row mb-4 text-center">
+          <h1 style="font-family: Arial, Helvetica, sans-serif;">Our hostels</h1>
+        </div>
+        <div class="col-4 mb-3" style="width: 20rem;">
+          <div class="card h-100">
+            <img src="https://mdbcdn.b-cdn.net/img/new/standard/city/041.webp" class="card-img-top" alt="Hollywood Sign on The Hill"/>
+            <div class="card-body">
+              <h5 class="card-title">Card title</h5>
+            </div>
+          </div>
+        </div>
+        <div class="col-4 mb-3" style="width: 20rem;">
+          <div class="card h-100">
+            <img src="https://mdbcdn.b-cdn.net/img/new/standard/city/041.webp" class="card-img-top" alt="Hollywood Sign on The Hill"/>
+            <div class="card-body">
+              <h5 class="card-title">Card title</h5>
+            </div>
+          </div>
+        </div>
+        <div class="col-4 mb-3" style="width: 20rem;">
+          <div class="card h-100">
+            <img src="https://mdbcdn.b-cdn.net/img/new/standard/city/041.webp" class="card-img-top" alt="Hollywood Sign on The Hill"/>
+            <div class="card-body">
+              <h5 class="card-title">Card title</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+
+<% }else{ %>
 <div class="indexContainer">
     <div class="mt-5">
     <% allPost.forEach((item) => { %>
@@ -8,13 +78,19 @@
             <h6 class="card-title"><%= item.postedby.hostel%></h6>
             <img style="height: 20rem" src="<%= item.photo %>" alt="..." >
             <div class="card-body">
-              <p class="card-button container"> 
+              <p class="card-button"> 
                 <div class="row align-items-start">
                     <div class="col-6">
-                        <button class="btn btn-block btn-primary"><i class="fa fa-arrow-up"></i> Upvote</button>
+                      <form action="/upvote", method="post">
+                        <input type="hidden" value="<%= item.id %>" name="postid">
+                        <button class="btn btn-block btn-primary" type="submit"><i class="fa fa-arrow-up"></i> Upvote(<%= item.upvote.length %>)</button>
+                      </form>
                     </div>
                     <div class="col-6">
-                        <button class="btn btn-block btn-primary col-1"><i class="fa fa-arrow-down"></i> Downvote</button> 
+                      <form action="/downvote", method="post">
+                        <input type="hidden" value="<%= item.id %>" name="postid">
+                        <button class="btn btn-block btn-primary" type="submit"><i class="fa fa-arrow-down"></i> Downvote(<%= item.downvote.length %>)</button> 
+                      </form>
                     </div>
                 </div>  
               </p>
@@ -32,4 +108,5 @@
     <% }) %>
     </div>
 </div>
+<% } %>
 <%- include("partials/footer.ejs") %> 

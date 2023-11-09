@@ -104,11 +104,21 @@ height: calc(100% - 73px);
 }
 @media (max-width: 450px) {
 .h-custom {
-height: 100%;
+    height: 100%;
 }
+}
+@media only screen and (max-width: 620px){
+    .h-custom{
+        width: 80% !important;
+        margin-top: 3rem;
+    }
 }
 
+
 /* -------- PROFILE ---------- */
+.profile-post{
+    height: 23rem;
+}   
 
 .gradient-custom-2 {
     /* fallback for old browsers */
@@ -120,3 +130,68 @@ height: 100%;
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     background: linear-gradient(to right, rgba(251, 194, 235, 1), rgba(166, 193, 238, 1))
     }
+
+    @media only screen and ( max-width:500px) {
+        #createpost-image-section{
+
+            flex-direction: column;
+        }
+
+        #imagepreview{
+            margin-top: 2rem;
+        }
+    }
+
+/* =========== HOMEPAGE RESPONSIVENESS ===================== */
+
+@media only screen and ( max-width:940px) {
+    .main-second{
+        display: flex;
+        flex-direction: column;
+    }
+}
+@media only screen and ( max-width:775px) {
+    .main-first{
+        flex-direction: column;
+        margin-top: 15rem !important;
+        align-items: center;
+    }
+    .main-second{
+        margin-top: 15rem !important;
+    }
+    .main-first-content{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+/* =========== ! HOMEPAGE RESPONSIVENESS ===============
+
+
+/* =========== PROFILE PAGE RESPONSIVENESS ===================== */
+
+@media only screen and ( max-width:940px) {
+    .profile-post{
+        height: 18rem;
+    }
+}
+@media only screen and ( max-width:775px) {
+    .profile-post{
+        height: 13rem;
+    }
+}
+
+/* =========== ! PROFILE PAGE RESPONSIVENESS ===============
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,14 +1,17 @@
 <%- include("../partials/header.ejs") %>  
 <div class="indexContainer">
   <div class="mt-5" >
-  <form action="/signup" method="post" class="signup row g-4 mx-auto m-4 needs-validation" novalidate style="background-color: rgb(0, 199, 199)">
+  <form action="/signup" method="post" enctype="multipart/form-data" class="signup row g-4 mx-auto m-4 needs-validation" novalidate style="background-color: rgb(0, 199, 199)">
+
+<!-- ================================ HEADER FOR SHOWING ERROR MESSAGE ============================================= -->
+
     <header style="display: flex; width:fit-content; right: 0;" class="position-absolute msg">
       <div class="toast <%= toastvalue %> float-right" id="toasts" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-body" style="color: red">
-          User alreay exits.
-        </div>
+        <div class="toast-body" style="color: red"><%= msg %></div>
       </div>
     </header>
+
+<!-- ================================ !HEADER FOR SHOWING ERROR MESSAGE ============================================= -->    
 
     <div class="col-md-12">
       <label for="validationCustom01" class="form-label">Name</label>
@@ -33,7 +36,7 @@
     </div>
     <div class="col-md-12">
         <label for="validationCustom03" class="form-label">Password</label>
-        <input type="password" class="form-control" id="validationCustom02" placeholder="Enter your password" name="password" required>
+        <input type="password" class="form-control" id="validationCustom03" placeholder="Enter your password" name="password" required>
         <div class="valid-feedback">
           Looks good!
         </div>
@@ -70,6 +73,20 @@
       </div>
     </div>
     <% } %>
+
+
+    <div class="input-group mb-5 ms-auto me-auto justify-content-between align-items-center" id="createpost-image-section">
+        <div class="d-flex flex-column">
+          <label class="form-label">Profile photo</label>
+          <div class="d-flex flex-row">
+            <input type="file" class="form-control" id="postformimage" aria-describedby="inputGroupFileAddon04" aria-label="Upload" accept=".jpg, .jpeg, .png" name="profileimage"/>
+            <button class="btn btn-outline-secondary text-white bg-danger" type="button" id="inputGroupFileAddon04">Remove</button>
+          </div>
+      </div>
+      <img src="" id="imagepreview" alt="no preview" style="height: 13rem; width: 16rem; border: 1px dashed whitesmoke; border-radius: 5px;">
+    </div>
+
+
     <div class="col-md-12">
       <label class="form-label">Gender</label>
         <br>

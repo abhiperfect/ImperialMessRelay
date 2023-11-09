@@ -11,22 +11,31 @@ const postSchema = new mongoose.Schema({
         type: String,
         default: "no photo"
     },
+    visibility:{
+        type: String
+    },
     postedby:{
         type: mongoose.Schema.Types.ObjectId,
         ref:"userModel"
     }, 
-    upvote:{
-        type: Array,
-        default: []
-    },
-    downvote:{
-        type: Array,
-        default: []
-    },
-    comment:{
-        type: Array,
-        default: []
-    }
+    upvote:[
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref:"userModel"
+        }
+    ],
+    downvote:[
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref:"userModel"
+        }
+    ],
+    comment:[
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "commentModel"
+        }
+    ]
 })
 
 mongoose.model("postModel", postSchema);

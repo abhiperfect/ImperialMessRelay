@@ -18,7 +18,7 @@
         event.stopPropagation()
       }
 
-      form.classList.add('was-validated')
+      form.classList.add("was-validated")
     }, false)
   })
 })()
@@ -27,6 +27,29 @@ function hide(){
   document.getElementById("toasts").classList.remove("show");
 }
 setTimeout("hide()", 3000);
+
+
+// ================ SHOWO IMAGE PREVIEW REMOVE  ===============
+
+  var inputImage = document.getElementById("postformimage");
+  var previewImage = document.getElementById("imagepreview");
+  var removeImage = document.getElementById("inputGroupFileAddon04");
+
+  inputImage.addEventListener("change", function(event){
+    if(event.target.files.length == 0){
+      return;
+    }
+    var tempUrl = URL.createObjectURL(event.target.files[0]);
+    previewImage.setAttribute("src", tempUrl);
+  })
+
+  removeImage.addEventListener("click", function(event){
+    previewImage.setAttribute("src", "");
+    const dt = new DataTransfer();
+    inputImage.files = dt.files;
+  })
+
+// ================ ! SHOW IMAGE PREVIEW AND REMOVE ===============
 
 </script>
 </body>

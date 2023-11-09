@@ -15,9 +15,13 @@ app.use(express.static(path.join(__dirname,  "../", "/CLIENT/public")));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: false }));
 app.use(fileUpload({useTempFiles: true}));
+
+// ===== ROUTER FILES =======
 app.use(require("./routes/auth"));
 app.use(require("./routes/post"));
 app.use(require("./routes/profile"));
+app.use(require("./routes/about"));
+// ===== ! ROUTER FILES =======
 
 mongoose.connect("mongodb://127.0.0.1:27017/messDB").then(() => console.log("Connected!"));
 
@@ -25,10 +29,18 @@ const userModel = mongoose.model("userModel");
 const postModel = mongoose.model("postModel");
 
 app.get("/", async (req, res) => {
-    const allPost = await postModel.find().populate("postedby").exec();
-    res.render("index",{
-        allPost: allPost
-    })
+    if(req.isAuthenticated()){
+        const allPost = await postModel.find().populate("postedby").exec();
+        res.render("index",{
+            allPost: allPost,
+            user: "authenticated"
+        })
+    }
+    else{
+        res.render("index",{
+            user: "notAuthenticated"
+        })
+    }
 })
 
 app.listen(port, ()=>{
