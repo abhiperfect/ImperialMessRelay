@@ -7,6 +7,25 @@
 .my-navbar{
     background-color: rgb(159, 210, 212) !important;
 }
+.hover-zoom{
+    transition: all 0.7s;
+}
+.hover-zoom:hover{
+    transform: rotate(360deg);
+}
+
+/* ------- ! NAVBAR ------- */
+
+/* ---------- HOME PAGE ---------- */
+
+.main-logo{
+    transition: all 0.6s;
+}
+.main-logo:hover{
+    transform: rotate(45deg);
+}
+
+/* ---------- ! HOME PAGE ---------- */
 
 /* --------- FOR COMMENTS OF THE POSTS ----------- */
 #ch{
@@ -120,6 +139,18 @@ height: calc(100% - 73px);
     height: 23rem;
 }   
 
+/*----- ADMIN  -------*/
+
+.admin-logo{
+    transition: all 0.5s;
+}
+
+.admin-logo:hover{
+    transform: rotateY(360deg);
+}
+
+/*----- !ADMIN  -------*/
+
 .gradient-custom-2 {
     /* fallback for old browsers */
     background: #fbc2eb;
@@ -181,9 +212,29 @@ height: calc(100% - 73px);
     }
 }
 
-/* =========== ! PROFILE PAGE RESPONSIVENESS ===============
+/* =========== ! PROFILE PAGE RESPONSIVENESS ===============*/
 
+/* =========== ADMIN ADD BUTTON =============*/
 
+@media only screen and ( max-width:950px) {
+    .admin-add-button{
+        flex-direction: column;
+    }
+}
+
+@media only screen and ( max-width:630px) {
+    .admin-add-button button{
+        width: 80% !important;
+    }
+}
+
+@media only screen and ( max-width:400px) {
+    .admin-add-button button{
+        width: 90% !important;
+    }
+}
+
+/* =========== ! ADMIN ADD BUTTON ============*?
 
 
 

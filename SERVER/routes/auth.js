@@ -3,9 +3,8 @@ const mongoose = require("mongoose"); //databse
 const router = express.Router();        //routes
 const passport = require("passport");    //Authentication
 const session = require("express-session");
-const path = require("path");  
+const googleStrategy = require("passport-google-oauth2").Strategy;
 var _ = require("lodash");
-require("../models/user");
 var bodyParser = require("body-parser");
 const userModel = mongoose.model("userModel");
 const cloudinary = require("../api/imageupload");
@@ -16,35 +15,63 @@ router.use(session({
     resave: false,
     saveUninitialized: false
 }))
-router.use(bodyParser.urlencoded({ extended: true }));
-router.use(express.json());
+
 router.use(passport.initialize());
 router.use(passport.session());
-passport.use(userModel.createStrategy()); //Stratgy to create local authentication by programmer
+router.use(require("../middlewares/flash"));
+router.use(bodyParser.urlencoded({ extended: true }));
+
+//============== LOCAL STRATEGY =========================
+
+passport.use(userModel.createStrategy());
+
+//============== ! LOCAL STRATEGY =======================
+
+//============== GOOGLE STRATEGY ========================
+
+passport.use(new googleStrategy({
+  clientID: process.env.GOOGLE_CLIENT_ID,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  callbackURL: "http://localhost:3000/auth/google/googleform"
+},
+async function(accessToken, refreshToken, profile, done) {
+  userModel.findOrCreate({name: profile.given_name, email: profile.email, googleId: profile.id}, function(err, user){
+
+    return done(err, user);
+  })
+}
+));
+
+//============== ! GOOGLE STRATEGY ======================
 
 
-passport.serializeUser(function(user, cb) {
-  process.nextTick(function() {
-    return cb(null, {
-      id: user.id,
-      username: user.email,
-      role: user.role
-    });
-  });
+passport.serializeUser(userModel.serializeUser());
+passport.deserializeUser(userModel.deserializeUser());
+
+//================ GOOGLE ROUTES =================
+
+router.get("/auth/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
+
+router.get("/auth/google/googleform", (req, res) => {
+  passport.authenticate("google", {successRedirect: "/", failureRedirect: "/login"});
+  // res.render("auth/googleform");
 });
-  
-passport.deserializeUser(function(user, cb) {
-  process.nextTick(function() {
-    return cb(null, user);
-  });
-});
+
+//================ ! GOOGLE ROUTES =================
+
 
 //--------------  SIGN UP ROUTE -----------------
 router.get("/signup", (req, res) => {
+  const msg = req.flash("msg");
+  var toastvalue;
+  if(msg.length > 0){
+    toastvalue = "d-block";
+  }
   res.render("auth/signup",{
-    user: req.query.user,
-    toastvalue: "",
-    msg: ""
+    toastvalue: toastvalue,
+    msg: msg
   });
 })
 
@@ -68,17 +95,22 @@ router.post("/signup", async (req, res)=>{
 
     profileimageURL = await profileimageURL;
   }
-  userModel.register({ name: name, email: email, hostel: hostel, room: room, gender: gender, role: role, profilephoto: profileimageURL}, req.body.password, async (err, user)=>{
+  userModel.register({ name: name, email: email, hostel: hostel, room: room, gender: gender, role: role, profilephoto: profileimageURL, state: "normal"}, req.body.password, async (err, user)=>{
     if(err){
-        res.render("auth/signup", {
-          toastvalue: "show",
-          msg: "Email already exists.",
-          user: req.user
+        res.render("/", {
+          toastvalue: "d-block",
+          msg: "Email already exists."
         })
     } 
     else{
         passport.authenticate("local")(req, res, () => {
+          req.flash("msg", "user added successfully.");
+          if(role == "student"){
             res.redirect("/");
+          }
+          else{
+            res.redirect("/adminhome");
+          }
         })
     }
   })
@@ -87,10 +119,11 @@ router.post("/signup", async (req, res)=>{
 
 //--------------- SIGN IN ROUTE ------------------
 router.get("/login", (req, res) => {
-  if(req.session.messages){
+  const msg = req.flash("error");
+  if(msg.length > 0){
     res.render("auth/login",{
-      toastvalue: "show",
-      msg: "Incorrect password"
+      toastvalue: "d-block",
+      msg: msg
     });
   }else{
     res.render("auth/login",{
@@ -103,28 +136,28 @@ router.get("/login", (req, res) => {
 
 router.post("/login", async (req, res) => {
   const user = new userModel({
-      email: req.body.email,
-      password: req.body.password
-  })
-  req.login(user, async function(err) {
-      if (err) { 
-          res.send(err);
-      }else{
-          const curUser = await userModel.findOne({email: user.email});
-          if(!curUser){
-              res.render("auth/signup", {
-                toastvalue: "show",
-                msg: "Sign up first.",
-                user: req.user
-              })
-          }
-          else{
-              passport.authenticate("local", { failureRedirect: '/login', failureMessage: true })(req, res, ()=>{
-                  res.redirect("/");
-              });
-          }
-      }
+    email: req.body.email,
+    password: req.body.password
   });
+  const formname = req.body.formname;
+  const checkUser = await userModel.find({email: user.email}).exec();
+  if(checkUser.length == 0){
+    req.flash("msg", "email not registered");
+    res.redirect("/signup");
+  }
+  else if(checkUser[0].role !== formname){
+    req.flash("msg", "Unauthorized");
+    res.redirect("/");
+  }
+  else if(checkUser[0].state == "blocked"){
+    req.flash("msg", "You are not allowed");
+    res.redirect("/");
+  }
+  else{
+    passport.authenticate("local", {failureRedirect: "/login", failureFlash: "Incorrect password"})(req, res, ()=>{
+      res.redirect("/");
+    })
+  }
 });
 
 
@@ -136,8 +169,11 @@ router.post("/logout", (req, res) => {
           console.log(err);
        }
       res.status(200).redirect("/");
+      // res.status(200).send("logged out");
   });
 });
+
+
 
 
 //--------------- CHANGE PASSWORD ROUTE   -----------------------

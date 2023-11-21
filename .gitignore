@@ -42,6 +42,7 @@ build/Release
 REF/
 SERVER/node_modules/
 jspm_packages/
+DEMO PHOTOS/
 
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/

@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
-const {authrole} = require("../middlewares/authrole")
+require("../routes/auth");
 const postModel = mongoose.model("postModel"); 
+const userModel = mongoose.model("userModel"); 
 const cloudinary = require("../api/imageupload");
 
 
@@ -24,9 +25,12 @@ router.get("/mypost", async (req, res) => {
 })
 
 //-----   CREATING A NEW POST (ONLY BY ROLE == STUDENT)   -----
-router.get("/createpost", (req, res) => {
-    if(req.isAuthenticated()){
-        res.render("createpost");
+router.get("/createpost", async (req, res) => {
+    if(req.isAuthenticated() && req.user.role == "student"){
+        const curUser = await userModel.findById(req.user.id);
+        res.render("createpost", {
+            user: curUser
+        });
     }
     else{
         res.redirect("/login");
@@ -35,12 +39,12 @@ router.get("/createpost", (req, res) => {
 
 
 
-router.post("/createpost",authrole(["student"]) , async (req, res) => {
-    if(req.isAuthenticated()){
+router.post("/createpost", async (req, res) => {
+    if(req.isAuthenticated() && req.user.role == "student"){
         const posttitle = req.body.posttitle;
         const postbody = req.body.postbody;
         var postimagefile;
-        if(!req.body.postimage){
+        if(!req.files.postimage){
             postimagefile = null;
             const post = new postModel({
                 title: posttitle,
@@ -54,21 +58,28 @@ router.post("/createpost",authrole(["student"]) , async (req, res) => {
             post.save();
         }else{
             postimagefile = req.files.postimage;
-            cloudinary.uploader.upload(String(postimagefile.tempFilePath), { public_id: req.user.name },
-            function(error, result) {
-                if(error){ console.log(error); }
-                const post = new postModel({
-                    title: posttitle,
-                    body: postbody,
-                    photo: result.secure_url,
-                    postedby: req.user.id,
-                    upvote: [],
-                    downvote: [], 
-                    comment: []
-                });
-                post.save(); 
-            }
-        );
+            postimageURL = new Promise((resolve, rejct) => {
+                cloudinary.uploader.upload(String(postimagefile.tempFilePath),
+                  function(error, result) {
+                    if(error){
+                      console.log(error);
+                    }
+                    resolve(result.secure_url);
+                  }
+                );
+            })
+            postimageURL = await postimageURL;
+
+            const post = new postModel({
+                title: posttitle,
+                body: postbody,
+                photo: postimageURL,
+                postedby: req.user.id,
+                upvote: [],
+                downvote: [], 
+                comment: []
+            });
+            post.save(); 
         }
         res.redirect("/");
     }
@@ -82,18 +93,19 @@ router.post("/createpost",authrole(["student"]) , async (req, res) => {
 
 router.post("/upvote", async (req, res) => {
     if(req.isAuthenticated()){
-        const post = await postModel.findById(req.body.postid);
-        const upvoteArray = post.upvote;
-        const downvoteArray = post.downvote;
-        const upvoteFound = upvoteArray.find((user) => user == req.user.id);
-        const downvoteFound = downvoteArray.find((user) => user == req.user.id);
-        if(downvoteFound){
-            res.redirect("/");
+        const post = await postModel.findById(req.body.postid); // getting the post by post id
+        const upvoteArray = post.upvote; // getting the upvote array
+        const downvoteArray = post.downvote; // getting the downvote array
+        const upvoteFound = upvoteArray.find((user) => user == req.user.id); // geting upvoted or not value
+        const downvoteFound = downvoteArray.find((user) => user == req.user.id); // getting downvoted or not value
+        if(downvoteFound){ // If the user is downvoted then don't allow to upvote
+            return res.redirect("/");
         }
-        else if(upvoteFound){
+        else if(upvoteFound){ // If upvoted then cancel the upvote
             await postModel.findByIdAndUpdate(req.body.postid, {$pull : {upvote: req.user.id}}).exec();
-        }else{
+        }else{ // The user is eleigible to upvote
             await postModel.findByIdAndUpdate(req.body.postid, {$push : {upvote: req.user.id}}).exec();
+            
         }
         res.redirect("/");
     }
@@ -109,18 +121,19 @@ router.post("/upvote", async (req, res) => {
 
 router.post("/downvote", async (req, res) => {
     if(req.isAuthenticated()){
-        const post = await postModel.findById(req.body.postid);
-        const upvoteArray = post.upvote;
-        const downvoteArray = post.downvote
-        const upvoteFound = upvoteArray.find((user) => user == req.user.id);
-        const downvoteFound = downvoteArray.find((user) => user == req.user.id);
-        if(upvoteFound){
-            res.redirect("/");
+        const post = await postModel.findById(req.body.postid); // getting the post by post id
+        const upvoteArray = post.upvote; // getting the upvoted users array
+        const downvoteArray = post.downvote; // getting the downvoted users array
+        const upvoteFound = upvoteArray.find((user) => user == req.user.id); // getting upvoted or not value
+        const downvoteFound = downvoteArray.find((user) => user == req.user.id); // getting downvoted or not value
+        if(upvoteFound){ // If the the user is upvoted then don't allow to downvote
+            return res.redirect("/");
         }
-        else if(downvoteFound){
+        else if(downvoteFound){ // If the user is downvoted then remove his/her downvote
             await postModel.findByIdAndUpdate(req.body.postid, {$pull : {downvote: req.user.id}}).exec();
-        }else{
+        }else{ // If the user is eligible to downvote
             await postModel.findByIdAndUpdate(req.body.postid, {$push : {downvote: req.user.id}}).exec();
+           
         }
         res.redirect("/");
     }

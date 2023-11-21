@@ -1,13 +1,24 @@
 <%- include("partials/header.ejs") %>    
+<div class="indexContainer min-vh-100">
+<!-- ================================ HEADER FOR SHOWING ERROR MESSAGE ============================================= -->
 
+<div class="modal <%= toastvalue %> mt-5" tabindex="-1" role="dialog" id="toast">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body text-center">
+        <p class="text-black"><%= msg %></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================================ !HEADER FOR SHOWING ERROR MESSAGE ============================================= -->    
 
 <% if(user == "notAuthenticated"){ %>
-
-<div class="indexContainer">
-    <div class="container mt-5 home-container" style="min-height: 100vh;">
+    <div class="container mt-5 home-container">
       <div class="row d-flex justify-content-between p-2 main-first">
           <div class="col-5">
-            <img src=".././images/ratatouille.png" alt="no image" class="img-fluid">
+            <img src=".././images/ratatouille.png" alt="no image" class="img-fluid main-logo">
           </div>
           <div class="col-5 main-first-content">
             <div class="text-white">
@@ -28,9 +39,8 @@
                   login
                 </a>
                 <div class="dropdown-content bg-transparent">
-                  <a class="dropdown-item" href="/login/?user=accountant" role="button">Student</a>
+                  <a class="dropdown-item" href="/login/?user=student" role="button">Student</a>
                   <a class="dropdown-item" href="/login/?user=chiefwarden" role="button">Chief Warden</a>
-                  <a class="dropdown-item" href="/login/?user=developer" role="button">Developer</a>
                   <a class="dropdown-item" href="/login/?user=student" role="button">Accountant</a>
                 </div>
               </div>
@@ -70,7 +80,7 @@
 </div>
 
 <% }else{ %>
-<div class="indexContainer">
+<div class="indexContainer min-vh-100">
     <div class="mt-5">
     <% allPost.forEach((item) => { %>
         <div class="card mb-3 p-3 m-1" style="width: 24rem; height: fit-content;">
