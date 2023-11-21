@@ -5,13 +5,13 @@
     <form action="/createpost" method="post" enctype="multipart/form-data" class="mt-9 m-2 needs-validation" novalidate>
           <div class="input-group mb-4" style="background-color: rgb(16, 93, 86); border-radius: 5px;">
             <div class="input-group-prependx">
-              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
+              <img src="<%= user.profilephoto %>"
                 alt="Generic placeholder image" class="img-fluid img-thumbnail m-2"
-                style="width: 4rem">
+                style="width: 4rem; height: 4rem;">
             </div>
             <div class="m-3">
-              <h5 class="mb-0">Andy Horwitz</h5>
-              <p class="mb-0">New York</p>
+              <h5 class="mb-0"><%= user.name %></h5>
+              <p class="mb-0"><%= user.hostel %></p>
             </div>
           </div>
 

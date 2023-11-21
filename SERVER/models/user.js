@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const passportLocalMongoose = require('passport-local-mongoose');
+const findOrCreate = require("mongoose-findorcreate");
 
 const userSchema = new mongoose.Schema({
     name:{
@@ -30,9 +31,16 @@ const userSchema = new mongoose.Schema({
     },
     gender:{
         type: String
+    },
+    googleId:{
+        type: String
+    },
+    state:{
+        type: String
     }
-});
+}, { strictQuery: false });
 
 //USER WILL HAVE TYPE AND OTHER PROPERTIES LATER
-userSchema.plugin(passportLocalMongoose, {usernameField: "email", passwordField: "password"});
+userSchema.plugin(passportLocalMongoose, {usernameField: "email"});
+userSchema.plugin(findOrCreate);
 mongoose.model("userModel", userSchema);

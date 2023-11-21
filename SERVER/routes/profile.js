@@ -16,7 +16,26 @@ router.get("/profile", async (req, res) => {
     if(req.isAuthenticated()){
         const user = await userModel.findById( req.user.id ).exec();
         const post = await postModel.find( { postedby: req.user.id } ).exec();
-        res.render("profile",{
+        if(req.user.role == "admin"){
+            res.redirect("/adminhome");
+        }
+        else{
+            res.render("profile",{
+                user: user,
+                post: post
+            });
+        }
+    }
+    else{
+        res.redirect("/login");
+    }
+});
+
+router.get("/userprofile/:id", async (req, res) => {
+    if(req.isAuthenticated()){
+        const user = await userModel.findById( req.params.id ).exec();
+        const post = await postModel.find( { postedby: req.params.id } ).exec();
+        res.render("userprofile",{
             user: user,
             post: post
         });
@@ -24,7 +43,7 @@ router.get("/profile", async (req, res) => {
     else{
         res.redirect("/login");
     }
-});
+})
 
 
 module.exports = router;

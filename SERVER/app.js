@@ -1,48 +1,64 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-var path = require("path");
+const path = require("path");
 const fileUpload = require("express-fileupload");
 require("dotenv").config();
 require("./models/user");
-require("./models/post")
+require("./models/post");
 
 const app = express();
-const port = 3000;
 app.set("view engine", "ejs");
-app.set("views", ("../CLIENT/views"));
+app.set("views", path.join(__dirname, "../CLIENT/views"));
 app.use(express.static(path.join(__dirname,  "../", "/CLIENT/public")));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: false }));
 app.use(fileUpload({useTempFiles: true}));
 
-// ===== ROUTER FILES =======
-app.use(require("./routes/auth"));
-app.use(require("./routes/post"));
-app.use(require("./routes/profile"));
-app.use(require("./routes/about"));
-// ===== ! ROUTER FILES =======
-
-mongoose.connect("mongodb://127.0.0.1:27017/messDB").then(() => console.log("Connected!"));
+mongoose.connect("mongodb://127.0.0.1:27017/messDB").then(() => console.log("Connected!")); 
 
 const userModel = mongoose.model("userModel");
 const postModel = mongoose.model("postModel");
 
+// ===== ROUTER FILES =========
+app.use(require("./routes/auth"));
+app.use(require("./routes/post"));
+app.use(require("./routes/profile"));
+app.use(require("./routes/about"));
+app.use(require("./routes/admin"));
+app.use(require("./middlewares/flash"));
+// ===== ! ROUTER FILES =======
+
+
 app.get("/", async (req, res) => {
+    const msg = req.flash("msg");
+    var toastvalue = "";
     if(req.isAuthenticated()){
-        const allPost = await postModel.find().populate("postedby").exec();
-        res.render("index",{
-            allPost: allPost,
-            user: "authenticated"
-        })
+        if(req.user.role == "admin"){
+            res.redirect("/adminhome");
+        }
+        else{
+            const allPost = await postModel.find().populate("postedby");
+            res.render("index",{
+                allPost: allPost,
+                user: "authenticated",
+                toastvalue: "",
+                msg: ""
+            })
+        }
     }
     else{
+        if(msg.length > 0){
+            toastvalue = "d-block";
+        }
         res.render("index",{
-            user: "notAuthenticated"
+            toastvalue: toastvalue,
+            user: "notAuthenticated",
+            msg: msg
         })
     }
 })
 
-app.listen(port, ()=>{
+app.listen(process.env.PORT || 3000, ()=>{
     console.log("Server running.....");
 });

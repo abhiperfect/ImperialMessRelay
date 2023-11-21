@@ -3,30 +3,6 @@
   <div class="mt-5" >
   <form action="/signup" method="post" enctype="multipart/form-data" class="signup row g-4 mx-auto m-4 needs-validation" novalidate style="background-color: rgb(0, 199, 199)">
 
-<!-- ================================ HEADER FOR SHOWING ERROR MESSAGE ============================================= -->
-
-<div class="modal <%= toastvalue %> mt-5" tabindex="-1" role="dialog" id="toast">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-body">
-        <p class="text-black"><%= msg %></p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ================================ !HEADER FOR SHOWING ERROR MESSAGE ============================================= -->    
-
-    <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start mt-3">
-      <p class="lead fw-normal mb-1 me-3 text-center">Sign up with</p>
-      <a type="button" class="btn btn-primary btn-floating mx-1" style="background-color: red;" role="button" href="/auth/google">
-        <i class="fa-brands fa-google"></i>
-      </a>
-    </div>
-
-    <div class="divider d-flex align-items-center mb-2">
-      <p class="text-center fw-bold mx-3 mb-0">Or</p>
-    </div>
 
     <div class="col-md-12">
       <label for="validationCustom01" class="form-label">Name</label>
