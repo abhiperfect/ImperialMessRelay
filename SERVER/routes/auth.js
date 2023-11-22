@@ -34,9 +34,9 @@ passport.use(new googleStrategy({
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
   callbackURL: "http://localhost:3000/auth/google/googleform"
 },
-async function(accessToken, refreshToken, profile, done) {
-  userModel.findOrCreate({name: profile.given_name, email: profile.email, googleId: profile.id}, function(err, user){
-
+function(accessToken, refreshToken, profile, done) {
+  // console.log(profile);
+  userModel.findOrCreate({name: profile.given_name, email: profile.email, googleId: profile.id, profilephoto: profile.photos[0].value}, function(err, user){
     return done(err, user);
   })
 }
@@ -54,10 +54,40 @@ router.get("/auth/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
 
-router.get("/auth/google/googleform", (req, res) => {
-  passport.authenticate("google", {successRedirect: "/", failureRedirect: "/login"});
+router.get("/auth/google/googleform",
+  passport.authenticate("google", {successRedirect: "/", failureRedirect: "/login"})
   // res.render("auth/googleform");
-});
+);
+
+router.get("/googleform", async (req, res) => {
+  if(req.isAuthenticated()){
+    const curUser = await userModel.findById(req.user.id);
+    const msg = req.flash("msg");
+    var toastvalue="";
+    if(msg.length> 0){
+      toastvalue = "d-block"
+    }
+    res.render("auth/googleform",{
+      toastvalue: toastvalue,
+      msg: msg,
+      user: curUser
+    });
+  }
+  else{
+    res.redirect("/");
+  }
+})
+
+router.post("/googleform", async (req, res) => {
+  if(req.isAuthenticated()){
+    const {hostel, room, gender} = req.body;
+    await userModel.findOneAndUpdate({email: req.user.email}, {role: "student", hostel: hostel, gender: gender, room: room}).exec();
+    req.flash("msg", "Updated successfully");
+    res.redirect("/");
+  }else{
+    res.redirect("/login");
+  }
+})
 
 //================ ! GOOGLE ROUTES =================
 

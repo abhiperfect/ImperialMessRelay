@@ -34,6 +34,9 @@ app.get("/", async (req, res) => {
     const msg = req.flash("msg");
     var toastvalue = "";
     if(req.isAuthenticated()){
+        if(!req.user.hostel){
+            res.redirect("/googleform");
+        }
         if(req.user.role == "admin"){
             res.redirect("/adminhome");
         }
