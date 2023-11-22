@@ -5,6 +5,10 @@ require("../routes/auth");
 const postModel = mongoose.model("postModel"); 
 const userModel = mongoose.model("userModel"); 
 const cloudinary = require("../api/imageupload");
+const bodyParser = require("body-parser");
+
+router.use(bodyParser.json());
+router.use(express.json());
 
 
 //============== SHOW ALL POST =====================
@@ -31,6 +35,9 @@ router.get("/createpost", async (req, res) => {
         res.render("createpost", {
             user: curUser
         });
+    }else if(!req.user.hostel){
+        req.flash("msg", "Please fill out these fields");
+        res.redirect("/googleform");
     }
     else{
         res.redirect("/login");
@@ -93,26 +100,31 @@ router.post("/createpost", async (req, res) => {
 
 router.post("/upvote", async (req, res) => {
     if(req.isAuthenticated()){
-        const post = await postModel.findById(req.body.postid); // getting the post by post id
+        const post = await postModel.findById(req.body.ajaxPostId); // getting the post by post id
         const upvoteArray = post.upvote; // getting the upvote array
         const downvoteArray = post.downvote; // getting the downvote array
         const upvoteFound = upvoteArray.find((user) => user == req.user.id); // geting upvoted or not value
         const downvoteFound = downvoteArray.find((user) => user == req.user.id); // getting downvoted or not value
+        // console.log(upvoteArray);
+        var updatedPost;
         if(downvoteFound){ // If the user is downvoted then don't allow to upvote
-            return res.redirect("/");
+            // return res.redirect("/")
+            return res.send({response: upvoteArray.length})
         }
         else if(upvoteFound){ // If upvoted then cancel the upvote
-            await postModel.findByIdAndUpdate(req.body.postid, {$pull : {upvote: req.user.id}}).exec();
+             updatedPost = await postModel.findByIdAndUpdate(req.body.ajaxPostId, {$pull : {upvote: req.user.id}},{ new: true });
         }else{ // The user is eleigible to upvote
-            await postModel.findByIdAndUpdate(req.body.postid, {$push : {upvote: req.user.id}}).exec();
+             updatedPost = await postModel.findByIdAndUpdate(req.body.ajaxPostId, {$push : {upvote: req.user.id}}, {new: true});
             
         }
-        res.redirect("/");
+        // res.redirect("/");
+        res.send({response: updatedPost.upvote.length});
     }
     else{
         res.redirect("/");
     }
 })
+
 
 // ================= ! UPVOTE ROUTE ======================
 
@@ -121,21 +133,22 @@ router.post("/upvote", async (req, res) => {
 
 router.post("/downvote", async (req, res) => {
     if(req.isAuthenticated()){
-        const post = await postModel.findById(req.body.postid); // getting the post by post id
+        const post = await postModel.findById(req.body.ajaxPostId); // getting the post by post id
         const upvoteArray = post.upvote; // getting the upvoted users array
         const downvoteArray = post.downvote; // getting the downvoted users array
         const upvoteFound = upvoteArray.find((user) => user == req.user.id); // getting upvoted or not value
         const downvoteFound = downvoteArray.find((user) => user == req.user.id); // getting downvoted or not value
+        var updatedPost;
         if(upvoteFound){ // If the the user is upvoted then don't allow to downvote
-            return res.redirect("/");
+            return res.send({response: downvoteArray.length})
         }
         else if(downvoteFound){ // If the user is downvoted then remove his/her downvote
-            await postModel.findByIdAndUpdate(req.body.postid, {$pull : {downvote: req.user.id}}).exec();
+            updatedPost = await postModel.findByIdAndUpdate(req.body.ajaxPostId, {$pull : {downvote: req.user.id}}, {new: true});
         }else{ // If the user is eligible to downvote
-            await postModel.findByIdAndUpdate(req.body.postid, {$push : {downvote: req.user.id}}).exec();
+            updatedPost = await postModel.findByIdAndUpdate(req.body.ajaxPostId, {$push : {downvote: req.user.id}}, {new: true});
            
         }
-        res.redirect("/");
+        res.send({response: updatedPost.downvote.length});
     }
     else{
         res.redirect("/");

@@ -82,7 +82,7 @@
 <% }else{ %>
 <div class="indexContainer min-vh-100">
     <div class="mt-5">
-    <% allPost.forEach((item) => { %>
+    <%var i = 0; allPost.forEach((item) => { %>
         <div class="card mb-3 p-3 m-1" style="width: 24rem; height: fit-content;">
             <h5 class="card-title"><%= item.postedby.name%></h5>
             <h6 class="card-title"><%= item.postedby.hostel%></h6>
@@ -91,16 +91,19 @@
               <p class="card-button"> 
                 <div class="row align-items-start">
                     <div class="col-6">
-                      <form action="/upvote", method="post">
-                        <input type="hidden" value="<%= item.id %>" name="postid">
-                        <button class="btn btn-block btn-primary" type="submit"><i class="fa fa-arrow-up"></i> Upvote(<%= item.upvote.length %>)</button>
+                      <% var k = item.upvote.length;%>
+                      <form action="/upvote", method="post" id="upvoteForm<%=i%>">
+                        <input type="hidden" value="<%= item.id %>" name="postid" id="upvoteInput<%=i%>">
+                        <button class="btn btn-block btn-primary" type="submit" id="upvoteButton<%=i%>" value="<%= i %>" onclick="ajaxFunctionForUpvote(this)"><i class="fa fa-arrow-up"></i> Upvote(<%= k %>)</button>
                       </form>
+                      
                     </div>
                     <div class="col-6">
-                      <form action="/downvote", method="post">
-                        <input type="hidden" value="<%= item.id %>" name="postid">
-                        <button class="btn btn-block btn-primary" type="submit"><i class="fa fa-arrow-down"></i> Downvote(<%= item.downvote.length %>)</button> 
+                      <form action="/downvote", method="post" id="downvoteForm<%=i%>">
+                        <input type="hidden" value="<%= item.id %>" name="postid" id="downvoteInput<%=i%>">
+                        <button class="btn btn-block btn-primary" type="submit" id="downvoteButton<%=i%>" value="<%= i %>" onclick="ajaxFunctionForDownvote(this)"><i class="fa fa-arrow-down"></i> Downvote(<%= item.downvote.length %>)</button> 
                       </form>
+                      <%i++;%>
                     </div>
                 </div>  
               </p>
