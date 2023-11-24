@@ -9,6 +9,9 @@ var bodyParser = require("body-parser");
 const userModel = mongoose.model("userModel");
 const cloudinary = require("../api/imageupload");
 
+require('dotenv').config()
+
+
 express().locals._ = _;
 router.use(session({
     secret: "abcd",
@@ -184,7 +187,7 @@ router.post("/login", async (req, res) => {
     req.flash("msg", "email not registered");
     res.redirect("/signup");
   }
-  else if(checkUser[0].role !== formname){
+  else if(checkUser[0].role !== formname && checkUser[0].role !== "chiefwarden"){
     req.flash("msg", "Unauthorized");
     res.redirect("/");
   }
@@ -198,7 +201,11 @@ router.post("/login", async (req, res) => {
   }
   else{
     passport.authenticate("local", {failureRedirect: "/login", failureFlash: "Incorrect password"})(req, res, ()=>{
+      // if( checkUser[0].role === "chiefwarden" ){
+      //  res.redirect("chiefwarden");
+      // }else{
       res.redirect("/");
+    // }
     })
   }
 });

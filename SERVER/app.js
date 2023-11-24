@@ -35,11 +35,28 @@ app.get("/", async (req, res) => {
     const msg = req.flash("msg");
     var toastvalue = "";
     if(req.isAuthenticated()){
+
         if(!req.user.hostel){
             return res.redirect("/googleform");
+
+        if(!req.user.hostel && req.user.role == "student"){
+            res.redirect("/googleform");
+
         }
         if(req.user.role == "admin"){
             res.redirect("/adminhome");
+        }else if(req.user.role == "chiefwarden"){
+            const user = await userModel.find({role: "student"}).exec();
+            const post = await postModel.find().populate("postedby").exec();
+            // console.log(user);
+            // console.log(post);
+            // console.log(user[0].name);
+            res.render("chiefwarden",
+            {
+                Alluser: user,
+                Allpost: post
+            }
+            ); 
         }
         else{
             const allPost = await postModel.find().populate("postedby").populate({path: "comment", populate: {path: "commentedby"}});

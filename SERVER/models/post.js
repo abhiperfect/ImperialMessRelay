@@ -11,6 +11,14 @@ const postSchema = new mongoose.Schema({
         type: String,
         default: "no photo"
     },
+    status:{
+        type: String,
+        default:"Unsolved"
+    },
+    access:{
+        type : String,
+        default:"Public"
+    },
     visibility:{
         type: String
     },

@@ -13,7 +13,7 @@ const postModel = mongoose.model("postModel");
 
 router.get("/profile", async (req, res) => {
     if(req.isAuthenticated()){
-        if(!req.user.hostel){
+        if(!req.user.hostel && req.user.role == "student"){
             req.flash("msg", "please fill out these fields");
             return res.redirect("/googleform");
         }
