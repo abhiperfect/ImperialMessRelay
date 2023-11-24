@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 require("../routes/auth");
 const postModel = mongoose.model("postModel"); 
 const userModel = mongoose.model("userModel"); 
+const commentModel = mongoose.model("commentModel"); 
 const cloudinary = require("../api/imageupload");
 const bodyParser = require("body-parser");
 
@@ -107,18 +108,20 @@ router.post("/upvote", async (req, res) => {
         const downvoteFound = downvoteArray.find((user) => user == req.user.id); // getting downvoted or not value
         // console.log(upvoteArray);
         var updatedPost;
+        var color = "-fill";
         if(downvoteFound){ // If the user is downvoted then don't allow to upvote
             // return res.redirect("/")
-            return res.send({response: upvoteArray.length})
+            return res.send({response: upvoteArray.length, color: ""})
         }
         else if(upvoteFound){ // If upvoted then cancel the upvote
              updatedPost = await postModel.findByIdAndUpdate(req.body.ajaxPostId, {$pull : {upvote: req.user.id}},{ new: true });
+             color="";
         }else{ // The user is eleigible to upvote
              updatedPost = await postModel.findByIdAndUpdate(req.body.ajaxPostId, {$push : {upvote: req.user.id}}, {new: true});
             
         }
         // res.redirect("/");
-        res.send({response: updatedPost.upvote.length});
+        res.send({response: updatedPost.upvote.length, color: color});
     }
     else{
         res.redirect("/");
@@ -139,16 +142,18 @@ router.post("/downvote", async (req, res) => {
         const upvoteFound = upvoteArray.find((user) => user == req.user.id); // getting upvoted or not value
         const downvoteFound = downvoteArray.find((user) => user == req.user.id); // getting downvoted or not value
         var updatedPost;
+        var color = "-fill";
         if(upvoteFound){ // If the the user is upvoted then don't allow to downvote
-            return res.send({response: downvoteArray.length})
+            return res.send({response: downvoteArray.length, color: ""})
         }
         else if(downvoteFound){ // If the user is downvoted then remove his/her downvote
             updatedPost = await postModel.findByIdAndUpdate(req.body.ajaxPostId, {$pull : {downvote: req.user.id}}, {new: true});
+            color = "";
         }else{ // If the user is eligible to downvote
             updatedPost = await postModel.findByIdAndUpdate(req.body.ajaxPostId, {$push : {downvote: req.user.id}}, {new: true});
            
         }
-        res.send({response: updatedPost.downvote.length});
+        res.send({response: updatedPost.downvote.length, color: color});
     }
     else{
         res.redirect("/");
@@ -157,6 +162,27 @@ router.post("/downvote", async (req, res) => {
 
 // ================= ! DOWNVOTE ROUTE ======================
 
+
+// =================  COMMENT ROUTE ======================
+
+router.post("/newComment", async (req, res) => {
+    if(req.isAuthenticated()){
+        const {ajaxComment, ajaxPostId} = req.body;
+        const curUser = req.user;
+        const newComment = new commentModel({
+            body: ajaxComment,
+            commentedby: curUser.id
+        });
+        newComment.save();
+        updatedPost = await postModel.findByIdAndUpdate(ajaxPostId, {$push : {comment: newComment}}, {new: true});
+        res.send({response: updatedPost.comment, user: req.user});
+    }
+    else{
+        res.redirect("/");
+    }
+});
+
+// ================= ! COMMENT ROUTE ======================
 
 
 

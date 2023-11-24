@@ -5,7 +5,6 @@ const mongoose = require("mongoose");
 require("../models/user");
 require("../models/post");
 
-const {authrole} = require("../middlewares/authrole");
 const userModel = mongoose.model("userModel");
 const postModel = mongoose.model("postModel");
 

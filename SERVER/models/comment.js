@@ -1,16 +1,14 @@
 const mongoose = require("mongoose");
+const userModel = mongoose.model("userModel");
+
 const commentSchema = new mongoose.Schema({
     body:{
         type: String
     },
     commentedby:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "usermodel"
-    },
-    commentedon:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "postmodel"
+        ref: "userModel"
     }
 })
 
-mongoose.model("commentmodel", commentSchema);
+mongoose.model("commentModel", commentSchema);

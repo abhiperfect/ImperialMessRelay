@@ -6,6 +6,7 @@ const fileUpload = require("express-fileupload");
 require("dotenv").config();
 require("./models/user");
 require("./models/post");
+require("./models/comment");
 
 const app = express();
 app.set("view engine", "ejs");
@@ -35,13 +36,14 @@ app.get("/", async (req, res) => {
     var toastvalue = "";
     if(req.isAuthenticated()){
         if(!req.user.hostel){
-            res.redirect("/googleform");
+            return res.redirect("/googleform");
         }
         if(req.user.role == "admin"){
             res.redirect("/adminhome");
         }
         else{
-            const allPost = await postModel.find().populate("postedby");
+            const allPost = await postModel.find().populate("postedby").populate({path: "comment", populate: {path: "commentedby"}});
+            
             res.render("index",{
                 allPost: allPost,
                 user: "authenticated",

@@ -19,6 +19,7 @@ router.use(session({
 router.use(passport.initialize());
 router.use(passport.session());
 router.use(require("../middlewares/flash"));
+router.use(require("../middlewares/emailverify"));
 router.use(bodyParser.urlencoded({ extended: true }));
 
 //============== LOCAL STRATEGY =========================
@@ -36,7 +37,10 @@ passport.use(new googleStrategy({
 },
 function(accessToken, refreshToken, profile, done) {
   // console.log(profile);
-  userModel.findOrCreate({name: profile.given_name, email: profile.email, googleId: profile.id, profilephoto: profile.photos[0].value}, function(err, user){
+  // userModel.findOrCreate({name: profile.given_name, email: profile.email, googleId: profile.id, profilephoto: profile.photos[0].value}, function(err, user){
+  //   return done(err, user);
+  // })
+  userModel.findOrCreate({email: profile.email}, {name: profile.given_name, googleId: profile.id, profilephoto: profile.photos[0].value}, function(err, user){
     return done(err, user);
   })
 }
@@ -47,6 +51,7 @@ function(accessToken, refreshToken, profile, done) {
 
 passport.serializeUser(userModel.serializeUser());
 passport.deserializeUser(userModel.deserializeUser());
+
 
 //================ GOOGLE ROUTES =================
 
@@ -125,6 +130,7 @@ router.post("/signup", async (req, res)=>{
 
     profileimageURL = await profileimageURL;
   }
+  
   userModel.register({ name: name, email: email, hostel: hostel, room: room, gender: gender, role: role, profilephoto: profileimageURL, state: "normal"}, req.body.password, async (err, user)=>{
     if(err){
         res.render("/", {
@@ -134,8 +140,11 @@ router.post("/signup", async (req, res)=>{
     } 
     else{
         passport.authenticate("local")(req, res, () => {
-          req.flash("msg", "user added successfully.");
-          if(role == "student"){
+          if(!user.is_verified){
+            res.redirect("/verify-email");
+          }
+          else if(role == "student"){
+            req.flash("msg", "user added successfully.");
             res.redirect("/");
           }
           else{
@@ -177,6 +186,10 @@ router.post("/login", async (req, res) => {
   }
   else if(checkUser[0].role !== formname){
     req.flash("msg", "Unauthorized");
+    res.redirect("/");
+  }
+  else if(!checkUser[0].is_verified){
+    req.flash("msg", "Please verify your email");
     res.redirect("/");
   }
   else if(checkUser[0].state == "blocked"){
