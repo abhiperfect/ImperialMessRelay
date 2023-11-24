@@ -103,6 +103,23 @@ function removesignuppopup(){ // remove popup function while signup
 //================= !ADMIN HOME PAGE POP UP TO CONFIRM TO REMOVE USER ===================
 
 
+//=============== FOR COMMENT MODAL ======================
+
+function displayCommentModal(id){
+  var postid = id.value;
+  var modal = document.getElementById("myModal"+postid); //to display modal
+  modal.classList.add("d-block");
+}
+
+function closeCommentModal(id){
+  var postid = id.value;
+  var modal = document.getElementById("myModal"+postid);
+  modal.classList.remove("d-block");
+}
+
+//=============== ! FOR COMMENT MODAL =====================
+
+
 </script>
 
 <!-- ========== BOOTSTRAP JS FILES ====================== -->

@@ -23,9 +23,6 @@ const userSchema = new mongoose.Schema({
     hostel:{
         type: String
     },
-    branch:{
-        type: String
-    }, 
     room:{
         type: Number
     },
@@ -37,6 +34,11 @@ const userSchema = new mongoose.Schema({
     },
     state:{
         type: String,
+        default: "unblocked"
+    }, 
+    is_verified:{
+        type: Boolean,
+        default: false
         default: "unblocked",
     },
     is_verified:{

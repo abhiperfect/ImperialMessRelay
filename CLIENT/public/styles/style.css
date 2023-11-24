@@ -97,152 +97,19 @@
     cursor: pointer;
 }
 
-/* =======================================
---------------- SIGN UP ------------------
-======================================= */
+/* =========== for post ==================== */
 
-.signup{
-    max-width: 70%;
-    /* background-color: rgba(46, 46, 46, 0.8); */
-    padding: 10px;
+/* APPEARENCE OF POST ON FEED */
+.feed-post{
+    font-family: Inter, sans-serif;
+    color: #676A79;
+    width:474px;
+    height: 700px;
+    margin-top: 70px;
+    margin-bottom: 20px;
     border-radius: 10px;
+    background-color: var(--shade-4-color) ;
 }
-
-
-/* -------- LOG IN ---------- */
-
-.divider:after,
-.divider:before {
-content: "";
-flex: 1;
-height: 1px;
-background: #eee;
-}
-.h-custom {
-height: calc(100% - 73px);
-}
-@media (max-width: 450px) {
-.h-custom {
-    height: 100%;
-}
-}
-@media only screen and (max-width: 620px){
-    .h-custom{
-        width: 80% !important;
-        margin-top: 3rem;
-    }
-}
-
-
-/* -------- PROFILE ---------- */
-.profile-post{
-    height: 23rem;
-}   
-
-/*----- ADMIN  -------*/
-
-.admin-logo{
-    transition: all 0.5s;
-}
-
-.admin-logo:hover{
-    transform: rotateY(360deg);
-}
-
-/*----- !ADMIN  -------*/
-
-.gradient-custom-2 {
-    /* fallback for old browsers */
-    background: #fbc2eb;
-    
-    /* Chrome 10-25, Safari 5.1-6 */
-    background: -webkit-linear-gradient(to right, rgba(251, 194, 235, 1), rgba(166, 193, 238, 1));
-    
-    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    background: linear-gradient(to right, rgba(251, 194, 235, 1), rgba(166, 193, 238, 1))
-    }
-
-    @media only screen and ( max-width:500px) {
-        #createpost-image-section{
-
-            flex-direction: column;
-        }
-
-        #imagepreview{
-            margin-top: 2rem;
-        }
-    }
-
-/* =========== HOMEPAGE RESPONSIVENESS ===================== */
-
-@media only screen and ( max-width:940px) {
-    .main-second{
-        display: flex;
-        flex-direction: column;
-    }
-}
-@media only screen and ( max-width:775px) {
-    .main-first{
-        flex-direction: column;
-        margin-top: 15rem !important;
-        align-items: center;
-    }
-    .main-second{
-        margin-top: 15rem !important;
-    }
-    .main-first-content{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-}
-/* =========== ! HOMEPAGE RESPONSIVENESS ===============
-
-
-/* =========== PROFILE PAGE RESPONSIVENESS ===================== */
-
-@media only screen and ( max-width:940px) {
-    .profile-post{
-        height: 18rem;
-    }
-}
-@media only screen and ( max-width:775px) {
-    .profile-post{
-        height: 13rem;
-    }
-}
-
-/* =========== ! PROFILE PAGE RESPONSIVENESS ===============*/
-
-/* =========== ADMIN ADD BUTTON =============*/
-
-@media only screen and ( max-width:950px) {
-    .admin-add-button{
-        flex-direction: column;
-    }
-}
-
-@media only screen and ( max-width:630px) {
-    .admin-add-button button{
-        width: 80% !important;
-    }
-}
-
-@media only screen and ( max-width:400px) {
-    .admin-add-button button{
-        width: 90% !important;
-    }
-}
-
-/* =========== ! ADMIN ADD BUTTON ============*?
-
-
-
-
-
-
-
-
 
 
 
@@ -250,11 +117,9 @@ height: calc(100% - 73px);
 /* User details on feed post  */
 
 .feed-post{
-    padding-top: 20px;
-    padding-bottom: 20px;
-    margin-bottom: 20px;
-    border-radius: 10px;
-    background-color: #fefefe;
+    margin-top: 20px;
+    margin-bottom: 0px;
+    background-color: var(--shade-1-color);
     height:fit-content;
 }
 .feed-post-user-detail{
@@ -516,4 +381,158 @@ display: none; /* Hidden by default */
 
  .all-comment-pop-up-button-modal-content-comment-text{
     color: #14191E;
- } 
+ }
+
+/* =========== for post ==================== */
+
+
+/* =======================================
+--------------- SIGN UP ------------------
+======================================= */
+
+.signup{
+    max-width: 70%;
+    /* background-color: rgba(46, 46, 46, 0.8); */
+    padding: 10px;
+    border-radius: 10px;
+}
+
+
+/* -------- LOG IN ---------- */
+
+.divider:after,
+.divider:before {
+content: "";
+flex: 1;
+height: 1px;
+background: #eee;
+}
+.h-custom {
+height: calc(100% - 73px);
+}
+@media (max-width: 450px) {
+.h-custom {
+    height: 100%;
+}
+}
+@media only screen and (max-width: 620px){
+    .h-custom{
+        width: 80% !important;
+        margin-top: 3rem;
+    }
+}
+
+
+/* -------- PROFILE ---------- */
+.profile-post{
+    height: 23rem;
+}   
+
+/*----- ADMIN  -------*/
+
+.admin-logo{
+    transition: all 0.5s;
+}
+
+.admin-logo:hover{
+    transform: rotateY(360deg);
+}
+
+/*----- !ADMIN  -------*/
+
+.gradient-custom-2 {
+    /* fallback for old browsers */
+    background: #fbc2eb;
+    
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to right, rgba(251, 194, 235, 1), rgba(166, 193, 238, 1));
+    
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to right, rgba(251, 194, 235, 1), rgba(166, 193, 238, 1))
+    }
+
+    @media only screen and ( max-width:500px) {
+        #createpost-image-section{
+
+            flex-direction: column;
+        }
+
+        #imagepreview{
+            margin-top: 2rem;
+        }
+    }
+
+/* =========== HOMEPAGE RESPONSIVENESS ===================== */
+
+@media only screen and ( max-width:940px) {
+    .main-second{
+        display: flex;
+        flex-direction: column;
+    }
+}
+@media only screen and ( max-width:775px) {
+    .main-first{
+        flex-direction: column;
+        margin-top: 15rem !important;
+        align-items: center;
+    }
+    .main-second{
+        margin-top: 15rem !important;
+    }
+    .main-first-content{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+/* =========== ! HOMEPAGE RESPONSIVENESS ===============
+
+
+/* =========== PROFILE PAGE RESPONSIVENESS ===================== */
+
+@media only screen and ( max-width:940px) {
+    .profile-post{
+        height: 18rem;
+    }
+}
+@media only screen and ( max-width:775px) {
+    .profile-post{
+        height: 13rem;
+    }
+}
+
+/* =========== ! PROFILE PAGE RESPONSIVENESS ===============*/
+
+/* =========== ADMIN ADD BUTTON =============*/
+
+@media only screen and ( max-width:950px) {
+    .admin-add-button{
+        flex-direction: column;
+    }
+}
+
+@media only screen and ( max-width:630px) {
+    .admin-add-button button{
+        width: 80% !important;
+    }
+}
+
+@media only screen and ( max-width:400px) {
+    .admin-add-button button{
+        width: 90% !important;
+    }
+}
+
+/* =========== ! ADMIN ADD BUTTON ============*?
+
+
+
+
+
+
+
+
+
+
+
+
