@@ -36,12 +36,11 @@ app.get("/", async (req, res) => {
     var toastvalue = "";
     if(req.isAuthenticated()){
 
-        if(!req.user.hostel){
+        if(!req.user.hostel && req.user == "student"){
             return res.redirect("/googleform");
-
+        }
         if(!req.user.hostel && req.user.role == "student"){
             res.redirect("/googleform");
-
         }
         if(req.user.role == "admin"){
             res.redirect("/adminhome");

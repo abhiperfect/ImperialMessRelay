@@ -143,7 +143,7 @@ router.post("/signup", async (req, res)=>{
     } 
     else{
         passport.authenticate("local")(req, res, () => {
-          if(!user.is_verified){
+          if(!user.is_verified && user.role == "student"){
             res.redirect("/verify-email");
           }
           else if(role == "student"){
