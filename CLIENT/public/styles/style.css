@@ -246,3 +246,274 @@ height: calc(100% - 73px);
 
 
 
+
+/* User details on feed post  */
+
+.feed-post{
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    background-color: #fefefe;
+    height:fit-content;
+}
+.feed-post-user-detail{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: fit-content;
+    border-radius: 10px;
+
+}
+
+.feed-post-user-name-date-main{
+    margin: 10px;
+}
+
+.feed-post-profile-photo{
+    margin-left: 10px;
+    padding: 2px;
+    height: 50px;
+    width: 50px;
+   border-radius: 50%;
+   border:2px solid  rgb(102, 102, 233);
+}
+
+.feed-post-user-name{
+    margin-right: 5px;
+    font-weight: bolder;
+    color: #14191E;
+    cursor: pointer;
+}
+.feed-post-user-name:hover{
+    color: #0F6FEC;
+}
+.feed-post-user-name-date{
+    display: flex;
+    flex-direction: row;
+}
+
+
+.feed-post-user-image{
+    margin-top: 2px;
+    width: 100%;
+    height: 500px;
+
+}
+
+.feed-post-user-image-container{
+    width: 100%;
+     
+}
+
+
+.feed-post-discription{
+    box-sizing: border-box;
+    padding: 0 16px 10px;
+}
+
+.feed-post-body-vote-access-comment{
+    width: 100%;
+  
+}
+
+
+/* Upvote button  */
+.feed-post-body-vote-access{
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.feed-post-body-vote-access-comment-post-vote{
+    display: flex;
+    margin: 10px;
+}
+
+.arrow-up {
+    margin-right: 10px;
+    display: inline-block;
+    width: 0; 
+    height: 0; 
+    background-color: #fff;
+    padding: 0;
+    border: 0;
+    outline: none;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-bottom: 20px solid #0F6FEC;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+
+}
+  .arrow-down {
+    display: inline-block;
+    width: 0; 
+    height: 0; 
+    background-color: #fff;
+    padding: 0;
+    border: 0;
+    outline: none;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-top: 20px solid #0F6FEC;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }  
+
+.feed-post-body-vote-access-comment-access{
+    color: #14191E;
+    margin-right: 20px;
+    font-weight: 500;
+}
+
+
+/* Comment box and comment button  */
+.feed-post-body-vote-access-comment-comment{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.feed-post-body-vote-access-comment-comment-comment{
+  margin-left: 10px;
+
+  border: #676A79;
+  background-color: #FFFFFF;
+  /* font-family: inherit;
+  font-size: inherit; */
+  padding: 5px 6px; 
+  display: block;
+  overflow: hidden;
+  resize: none;
+  border-radius: 10px;
+  line-height: 20px;
+  border: none;
+  border: 1px solid rgb(213, 213, 213);
+  overflow: auto;
+  outline: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+.feed-post-body-vote-access-comment-comment-comment[contenteditable]:empty::before {
+    content: "Share your views...";
+    color: gray;
+  }
+
+.feed-post-body-vote-access-comment-comment-submit{
+  margin-right: 10px;
+  border: none;
+  border-radius: 10px;
+}
+.feed-post-body-vote-access-comment-comment-submit:hover{
+    background-color: #0F6FEC;
+}
+
+
+/* comment pop-up button  */
+.all-comment-pop-up{
+    margin: 10px;
+}
+.all-comment-pop-up-button{
+   background-color: inherit;
+   border: none;
+   color: #ababac;
+}
+
+
+
+
+
+
+
+/* Commmets pop up  */
+/* The Modal (background) */
+.all-comment-pop-up-button-modal{
+
+display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  margin-top: 50px;
+  right: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100vh;
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+
+  
+  /* Modal Content */
+  .all-comment-pop-up-button-modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  align-self: center;
+  margin-top: 0px;
+  border-radius: 10px;
+  border: 1px solid #888;
+  width: 500px;
+  margin-bottom: 100px;
+  }
+  
+  /* The Close Button */
+  .close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+
+  /* MODEL COMMENT SECTION  */
+.all-comment-pop-up-button-modal-content-comments{
+    margin: 20px;
+    border: 1px solid black;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+  .all-comment-pop-up-button-modal-feed-post-profile-photo{
+    /* margin-left: 10px; */
+    padding: 2px;
+    height: 40px;
+    width: 40px;
+   border-radius: 50%;
+   border:2px solid  rgb(102, 102, 233);
+  
+  }
+
+  .all-comment-pop-up-button-modal-content-comment-user-detail{
+    display: flex;
+    align-items: center;
+    
+}
+.all-comment-pop-up-button-modal-user-name{
+  font-size: 13px;
+  font-weight: bolder;
+}
+.all-comment-pop-up-button-modal-user-name-name{
+    color: #14191E;
+    font-weight: bolder;
+    font-size: 13px;
+  }
+  
+  .all-comment-pop-up-button-modal-user-date{
+    font-size: 10px;
+    font-weight: bolder;
+  } 
+
+ .all-comment-pop-up-button-modal-content-comment-text{
+    color: #14191E;
+ } 
