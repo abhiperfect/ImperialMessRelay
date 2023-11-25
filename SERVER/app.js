@@ -20,6 +20,7 @@ mongoose.connect("mongodb://127.0.0.1:27017/messDB").then(() => console.log("Con
 
 const userModel = mongoose.model("userModel");
 const postModel = mongoose.model("postModel");
+const commentModel = mongoose.model("commentModel");
 
 // ===== ROUTER FILES =========
 app.use(require("./routes/auth"));
