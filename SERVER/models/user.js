@@ -39,12 +39,7 @@ const userSchema = new mongoose.Schema({
     is_verified:{
         type: Boolean,
         default: false
-    },
-    is_verified:{
-        type : Boolean,
-        default: false,
     }
-
 }, { strictQuery: false });
 
 //USER WILL HAVE TYPE AND OTHER PROPERTIES LATER

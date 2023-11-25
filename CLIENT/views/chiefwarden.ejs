@@ -3,6 +3,28 @@
 
   <div class=" indexContainer min-vh-100 pt-5">
 
+
+    <div class="chiefwarden-details mt-3">
+
+      <div class="chiefwarden-details-profile-name">
+        <div class="animated tada">
+          <img class="chiefwarden-details-profile " src="/images/profile.jpg" alt="profile-image">
+        </div>
+
+        <div class="chiefwarden-details-name text-white">
+          <h2>Nihal</h2>
+          <h3>nihal@admin.com</h3>
+        </div>
+      </div>
+      <div id="chiefwarden-details-logout">
+        <form action="/logout" method="post">
+          <button type="submit" class="btn btn-danger btn-xl chiefwarden-logout">Logout</button>
+        </form>
+
+      </div>
+
+    </div>
+
     <div class="chiefwarden-container">
 
 
@@ -12,58 +34,55 @@
 
         <%var i=0; Allpost.forEach((item)=> { %>
 
-          <div class="feed-post">
-            <div class="feed-post-user-detail">
-              <img src="<%= item.postedby.profilephoto %>" class="feed-post-profile-photo" alt="Profile-Photo">
-              <div class="feed-post-user-name-date-main">
-                <div class="feed-post-user-name-date">
+          <div class="feed-post bg-white mt-3 w-100">
+            <div class="feed-post-user-detail mt-2 mb-0">
+              <img src="<%= item.postedby.profilephoto%>" class="feed-post-profile-photo" alt="Profile-Photo">
+              <div class="feed-post-user-name-date-main d-flex">
+                <div class="feed-post-user-name-date d-flex flex-column">
                   <div class="feed-post-user-name">
-                    <%= item.postedby.name%>
+                    <%= item.postedby.name %>
                   </div>
                   <div class="feed-post-access">
-                    <%= item.postedby.hostel %>
+                    <%= item.postedby.hostel %>&nbsp;Hostel
                   </div>
                 </div>
-                <div class="feed-post-user-date">7/11/2023</div>
               </div>
+              <div class="feed-post-user-date ms-auto me-3">04/09/2023</div> <!-- for date-->
             </div>
+            <hr class="mt-0">
             <div class="feed-post-discription">
-              <div class="feed-post-discription-title text-primary">#<%= item.title %>
-              </div>
               <%= item.body %>
             </div>
-            <div class="feed-post-user-image-container"><img src="<%= item.photo %>" alt=""
+            <div class="feed-post-user-image-container p-1"><img src="<%= item.photo %>" alt=""
                 class="feed-post-user-image">
             </div>
+            <hr class="mt-0 mb-0">
             <div class="feed-post-body-vote-access-comment">
               <div class="feed-post-body-vote-access">
                 <div class="feed-post-body-vote-access-comment-post-vote">
 
 
+                  <%var x="" ; var y="" ; if( item.status==="solved" ){ x="disabled" ;}else{ y="disabled" ;} %>
+                    <div class="feed-post-body-solve-unsolve-acsess">
+                      <form action="/solved" method="post" id="solvedForm<%=i%>">
+                        <input type="hidden" id="idForStatusSolved<%= i %>" name="status" value="solved">
+                        <button class="btn btn-primary  w-100 ms-0 <%=x %>" type="submit" value="<%= item.id%>"
+                          name="postId" id="solvedButton<%= item.id%>" onclick="solvedForm(this)">Solved</button>
+                      </form>
+                      <form action="/unsolved" method="post" id="unsolvedForm<%=i%>">
+                        <input type="hidden" id="idForStatusUnsolved<%= i %>" name="status" value="unsolved">
+                        <button class="btn btn-danger  w-100 ms-2 <%=y  %>" type="submit" value="<%= item.id%>"
+                          name="postId" id="unsolvedButton<%= item.id%>" onclick="unsolvedForm(this)">Unsolved</button>
+                      </form>
 
-
-
-                  <div class="three-state-toggle" id="<% item.id %>">
-                    <input type="radio" id="toggle-button-1" name="toggle-button" value="on" checked>
-                    <label for="toggle-button-1">Solved</label>
-
-                    <input type="radio" id="toggle-button-2" name="toggle-button" value="off">
-                    <label for="toggle-button-2">Unsolved</label>
-
-                    <input type="radio" id="toggle-button-3" name="toggle-button" value="indeterminate">
-                    <label for="toggle-button-3">Under Review</label>
-                  </div>
-
-
-
-                  
+                    </div>
 
                 </div>
-                <div class="feed-post-body-vote-access-comment-access">
-                  <%= item.access %>
-                    <%= item.status %>
+                <div class="feed-post-body-vote-access-comment-access ms-2 d-flex flex-wrap">
+                  <%= item.access %> <!-- The scope of the post -->
                 </div>
               </div>
+
 
 
 
@@ -72,61 +91,94 @@
                 <!-- POP UP FOR READING COMMENTS     -->
                 <!-- Trigger/Open The Modal -->
 
-                <button class="all-comment-pop-up-button" onclick="displayCommentModel('#<% item.id %>')">View all 24
-                  comments</button>
-
-
-                <!-- The Modal -->
-                <div id="<% item.id %>" class="all-comment-pop-up-button-modal">
-                  <span class="close">&times;</span>
-                  <!-- Modal content -->
-
-
-
-                  <div class="all-comment-pop-up-button-modal-content">
-
-                    <div class="feed-post-user-detail">
-                      <img src="/images/profile.jpg" class="feed-post-profile-photo" alt="Profile-Photo">
-                      <div class="feed-post-user-name-date-main">
-                        <div class="feed-post-user-name-date">
-                          <div class="feed-post-user-name">Raju Rastogi .</div>
-                          <div class="feed-post-access">Raman</div>
+                <!--  recent post -->
+                <% var l=item.comment.length;%>
+                  <% if(l){ %>
+                    <div class="d-flex align-items-start border border-2 border-secondary rounded p-2">
+                      <div class="d-flex" style="align-items: start;">
+                        <img id="recentCommentUserProfile<%= item.id %>"
+                          src="<%= item.comment[l-1].commentedby.profilephoto%>" class="me-2"
+                          style="height: 40px; width: 40px; border-radius: 50%; border: 2px solid black;"></img>
+                      </div>
+                      <div>
+                        <div class="text-black" id="recentCommentBy<%= item.id %>">
+                          <%= item.comment[l-1].commentedby.name%>
                         </div>
-                        <div class="feed-post-user-date">7/11/2023</div>
+
+                        <div style="font-size: 0.9rem;" id="recentComment<%= item.id %>">
+                          <%= item.comment[l-1].body%>
+                        </div>
                       </div>
                     </div>
-                    <div class="feed-post-discription">
-                      <p class="feed-post-discription-para"> </p>
+                    <% } %>
+              </div>
+
+              <!-- ! recent post -->
+
+              <button class="all-comment-pop-up-button ms-1" value="<%= item.id %>" onclick="displayCommentModal(this)"
+                id="allCommentButton<%= item.id %>">View all <%= item.comment.length %> comments</button>
+
+              <!-- The Modal -->
+              <div id="myModal<%= item.id %>" class="all-comment-pop-up-button-modal">
+                <button value="<%= item.id %>" class="close border-0 bg-transparent"
+                  onclick="closeCommentModal(this)">&times;</button><!--button to close the modal-->
+                <!-- Modal content -->
+
+
+
+                <div class="all-comment-pop-up-button-modal-content" style="margin-top: 0.9rem">
+
+                  <div class="feed-post-user-detail">
+                    <img src="<%= item.postedby.profilephoto%>" class="feed-post-profile-photo" alt="Profile-Photo">
+                    <div class="feed-post-user-name-date-main d-flex justify-content-between">
+                      <div class="feed-post-user-name-date d-flex flex-column">
+                        <div class="feed-post-user-name">
+                          <%= item.postedby.name %>
+                        </div>
+                        <div class="feed-post-access">
+                          <%= item.postedby.hostel %>&nbsp;Hostel
+                        </div>
+                      </div>
                     </div>
-                    <div class="feed-post-user-image-container"><img src="/images/food.jpg" alt=""
-                        class="feed-post-user-image">
 
+                    <div class="feed-post-user-date ms-auto me-2">7/11/2023</div>
+
+                  </div>
+                  <div class="feed-post-discription">
+                    <p class="feed-post-discription-para"> </p>
+                  </div>
+                  <div class="feed-post-user-image-container p-1"><img src="<%= item.photo %>" alt=""
+                      class="feed-post-user-image">
+
+                    <!-- ALL COMMENTS -->
+                    <% item.comment.forEach((commentItem)=> {%>
                       <div class="all-comment-pop-up-button-modal-content-comments">
-
                         <div class="all-comment-pop-up-button-modal-content-comment-user-detail">
-                          <img src="/images/profile-1.jpg"
-                            class="all-comment-pop-up-button-modal-feed-post-profile-photo" alt="Profile-Photo">
+                          <img src="<%= commentItem.commentedby.profilephoto%>"
+                            class="all-comment-pop-up-button-modal-feed-post-profile-photo" alt="Profile-Photo"></img>
                           <div class="feed-post-user-name-date-main">
-                            <div class="feed-post-user-name-date">
-                              <div class="all-comment-pop-up-button-modal-user-name-name">Ishant kumar .</div>
+                            <div class="feed-post-user-name-date d-flex flex-column">
+                              <div class="all-comment-pop-up-button-modal-user-name-name" style="font-size: 1rem;">
+                                <%= commentItem.commentedby.name %>
+                              </div>
                               <div
                                 class="all-comment-pop-up-button-modal-user-name all-comment-pop-up-button-modal-user-name-access">
-                                Tagore</div>
+                                <%= commentItem.commentedby.hostel %>&nbsp; Hostel
+                              </div>
                             </div>
-                            <div class="all-comment-pop-up-button-modal-user-date">7/11/2023</div>
                           </div>
+                          <div class="all-comment-pop-up-button-modal-user-date ms-auto me-2">7/11/2023</div>
 
                         </div>
                         <div class="all-comment-pop-up-button-modal-content-comment-text">
                           <p>
-                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Obcaecati rerum officia vitae quae
-                            omnis minus veniam esse voluptates excepturi explicabo, dicta cum repudiandae maiores minima
-                            numquam corporis natus. Eos, saepe.
+                            <%= commentItem.body %>
                           </p>
                         </div>
 
                       </div>
-                    </div>
+                      <%})%>
+                        <!-- ! ALL COMMENTS -->
 
 
                   </div>
@@ -134,15 +186,19 @@
 
                 </div>
 
+
               </div>
+
             </div>
+
           </div>
-          <% }) %>
+          <% i++; %>
+            <% }) %>
       </div>
 
       <div class="chiefwarden-container-right">
 
-        <div class="row">
+        <div class="row" style="width: 100%;">
           <div class="col-lg-12">
             <div class="main-box clearfix">
               <div class="table-responsive">
@@ -200,39 +256,27 @@
 
 
                                       <% if( item.state==="blocked" ){ %>
-                                        <input type="checkbox" id="myCheckbox<%= item.id %>" data-toggle="switchbutton"
-                                          data-onlabel="UN-BLOCK" data-offlabel="🚫 Block" data-onstyle="success"
+
+                                        <input type="checkbox" id="bmyCheckbox<%= item.id %>" data-toggle="switchbutton"
+                                          data-onlabel="UN-BLOCKED" data-offlabel="BLOCKED" data-onstyle="success"
                                           data-offstyle="danger" name="myCheckbox" value="<%= item.id %>"
-                                          onchange="sendCheckboxState(this)">
+                                          onchange="bsendCheckboxState(this,1)">
+
+
+
+
                                         <% } else {%>
-                                          <input type="checkbox" id="myCheckbox<%= item.id %>" data-toggle="switchbutton"
-                                            checked data-onlabel="UN-BLOCK" data-offlabel="🚫 Block"
-                                            data-onstyle="success" data-offstyle="danger" name="myCheckbox" value="<%= item.id %>"
-                                            onchange="sendCheckboxState(this)">
+
+
+
+                                          <input type="checkbox" id="umyCheckbox<%= item.id %>"
+                                            data-toggle="switchbutton" checked data-onlabel="UN-BLOCKED"
+                                            data-offlabel="BLOCKED" data-onstyle="success" data-offstyle="danger"
+                                            name="myCheckbox" value="<%= item.id %>"
+                                            onchange="usendCheckboxState(this,0)">
+
                                           <% } %>
 
-                                            <script>
-
-                                              function sendCheckboxState( stateid) { 
-                                                alert(stateid.value);
-                                                const checkbox = document.getElementById(`myCheckbox${ stateid.value}`);
-                                                const checkboxState = checkbox.checked ? 1 : 0;
-                                                alert(`myCheckbox${ stateid.value}`);
-                                                const xhr = new XMLHttpRequest();
-                                                xhr.open('post', '/state');
-                                                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                                                xhr.send('checkboxState=' + checkboxState);
-
-                                                xhr.onload = function () {
-                                                  if (xhr.status === 200) {
-                                                    console.log('Checkbox state sent to server:', xhr.responseText);
-                                                  } else {
-                                                    console.error('Error sending checkbox state to server:', xhr.statusText);
-                                                  }
-                                                };
-                                              }
-
-                                            </script>
 
 
                                     </td>
