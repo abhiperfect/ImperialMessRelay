@@ -108,13 +108,18 @@ function removesignuppopup(){ // remove popup function while signup
 function displayCommentModal(id){
   var postid = id.value;
   var modal = document.getElementById("myModal"+postid); //to display modal
+  var notification = document.getElementById("notification");
   modal.classList.add("d-block");
+  notification.classList.add("d-none");
 }
 
 function closeCommentModal(id){
+  console.log(id);
   var postid = id.value;
   var modal = document.getElementById("myModal"+postid);
+  var notification = document.getElementById("notification");
   modal.classList.remove("d-block");
+  notification.classList.remove("d-none");
 }
 
 //=============== ! FOR COMMENT MODAL =====================

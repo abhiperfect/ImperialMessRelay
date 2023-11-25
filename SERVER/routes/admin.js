@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 var _ = require("lodash");
 const userModel = mongoose.model("userModel");
 const postModel = mongoose.model("postModel");
+const commentModel = mongoose.model("commentModel");
 require("../middlewares/flash");
 
 
@@ -49,7 +50,25 @@ router.get("/adminhome", async (req, res) => {
 router.post("/removeuser/:id", async (req, res) => {
     if(req.isAuthenticated()){
         if(req.user.role == "admin"){
-            await postModel.deleteMany({postedby: req.params.id});
+            const userId = req.params.id;
+            const deleteComment = await commentModel.deleteMany({commentedby: userId});
+            const allPost = await postModel.find();
+            for(var i = 0; i < allPost.length; i++){
+                var curPostUpvote = allPost[i].upvote;
+                var curPostDownvote = allPost[i].downvote;
+                if(curPostUpvote.find((user) => user == userId)){
+                    await postModel.findByIdAndUpdate(allPost[i].id, {$pull: {upvote: userId}});
+                }
+                if(curPostDownvote.find((user) => user == userId)){
+                    await postModel.findByIdAndUpdate(allPost[i].id, {$pull: {downvote: userId}});
+                }
+                if(allPost[i].postedby.id === userId){
+                    var temp = allPost[i].id;
+                    await postModel.findByIdAndDelete(temp);
+                    await commentModel.deleteMany({commentedon: temp});
+                }
+            }
+            await postModel.deleteMany({postedby: userId});
             const user = await userModel.findByIdAndDelete(req.params.id);
             req.flash("msg", "user successfully removed.");
             res.redirect("/adminhome");
