@@ -134,9 +134,9 @@ router.post("/signup", async (req, res)=>{
     profileimageURL = await profileimageURL;
   }
   
-  userModel.register({ name: name, email: email, hostel: hostel, room: room, gender: gender, role: role, profilephoto: profileimageURL, state: "normal"}, req.body.password, async (err, user)=>{
+  userModel.register({ name: _.capitalize(name), email: _.toLower(email), hostel: _.capitalize(hostel), room: room, gender: gender, role: role, profilephoto: profileimageURL}, req.body.password, async (err, user)=>{
     if(err){
-        res.render("/", {
+        res.redirect("/", {
           toastvalue: "d-block",
           msg: "Email already exists."
         })

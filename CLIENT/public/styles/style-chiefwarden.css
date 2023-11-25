@@ -1,4 +1,40 @@
 
+/* chief warden details  */
+.chiefwarden-details{
+    display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+  	width: 90%;
+	height: 200px;
+	border-radius: 10px;
+	background-color: #315f7d;
+
+}
+
+.chiefwarden-details-profile{
+	height: 120px;
+	width: 120px;
+	margin: 10px;
+	border-radius: 50%;
+}
+.chiefwarden-logout{
+	height: 40px;
+}
+
+.chiefwarden-details-profile-name{
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+}
+
+#chiefwarden-details-logout{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-right: 10px;
+}
+/* !chief warden details  */
+
 .chiefwarden-container{
     
     display: grid;
@@ -222,3 +258,5 @@
 .table-stats .table-line-plus .status-social-icon {
 	color: #a75d54;
 }
+
+

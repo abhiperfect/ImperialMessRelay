@@ -49,7 +49,7 @@ router.get("/createpost", async (req, res) => {
 
 router.post("/createpost", async (req, res) => {
     if(req.isAuthenticated() && req.user.role == "student"){
-        console.log(req.body);
+        
         const posttitle = req.body.posttitle;
         const postbody = req.body.postbody;
         const visibility = req.body.visibility;

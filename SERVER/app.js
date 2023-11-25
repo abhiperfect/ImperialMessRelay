@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const path = require("path");
 const fileUpload = require("express-fileupload");
+const { forEach, iteratee } = require("lodash");
 require("dotenv").config();
 require("./models/user");
 require("./models/post");
@@ -16,7 +17,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: false }));
 app.use(fileUpload({useTempFiles: true}));
 
-mongoose.connect("mongodb://127.0.0.1:27017/messDB").then(() => console.log("Connected!")); 
+// mongoose.connect("mongodb://127.0.0.1:27017/messDB").then(() => console.log("Connected!")); 
+
+mongoose.connect("mongodb+srv://ishant:"+process.env.MONGO_PASSWORD+"@cluster0.qho5cx4.mongodb.net/MessDB").then(() => console.log("Connected to mongoDB atlas"));
 
 const userModel = mongoose.model("userModel");
 const postModel = mongoose.model("postModel");
@@ -28,6 +31,7 @@ app.use(require("./routes/post"));
 app.use(require("./routes/profile"));
 app.use(require("./routes/about"));
 app.use(require("./routes/admin"));
+app.use(require("./routes/chiefwarden"));
 app.use(require("./middlewares/flash"));
 // ===== ! ROUTER FILES =======
 
@@ -35,8 +39,10 @@ app.use(require("./middlewares/flash"));
 app.get("/", async (req, res) => {
     const msg = req.flash("msg");
     var toastvalue = "";
-    if(req.isAuthenticated()){
 
+    if(req.isAuthenticated()){
+        const currUserId = req.user.id;
+       
         if(!req.user.hostel && req.user == "student"){
             return res.redirect("/googleform");
         }
@@ -47,22 +53,30 @@ app.get("/", async (req, res) => {
             res.redirect("/adminhome");
         }else if(req.user.role == "chiefwarden"){
             const user = await userModel.find({role: "student"}).exec();
-            const post = await postModel.find().populate("postedby").exec();
+            // const post = await postModel.find().populate("postedby").exec();
+            const allPost = await postModel.find().populate("postedby").populate({path: "comment", populate: {path: "commentedby"}});
             // console.log(user);
             // console.log(post);
             // console.log(user[0].name);
             res.render("chiefwarden",
             {
                 Alluser: user,
-                Allpost: post
+                Allpost: allPost
             }
             ); 
         }
         else{
             const allPost = await postModel.find().populate("postedby").populate({path: "comment", populate: {path: "commentedby"}});
-            
+            const newArrayNotificationPost = [];
+            allPost.forEach(item =>{
+                if( currUserId == item.postedby.id ){
+                    // console.log(item);
+                    newArrayNotificationPost.push(item);
+                }
+            })
             res.render("index",{
                 allPost: allPost,
+                notificationPost : newArrayNotificationPost,
                 user: "authenticated",
                 toastvalue: "",
                 msg: ""
