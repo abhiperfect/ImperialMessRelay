@@ -67,9 +67,10 @@ function showpopup(btn){ // show popup function while removing a user
   popupbox.classList.add("d-block");
 }
 
-function removepopup(){ // remove popup function while remvoing a function
-  var popupbox = document.getElementById("showpopupbox");
-  popupbox.classList.add("d-none");
+function removepopup(btn){ // remove popup function while remvoing a function
+  var popupbox = document.getElementById("showpopupbox" + btn.value);
+  
+  popupbox.classList.remove("d-block");
 }
 
 function showsignuppopup(obj){ //show popup while sign up for admin, accountant or chief warden
