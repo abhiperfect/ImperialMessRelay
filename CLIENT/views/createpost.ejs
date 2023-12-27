@@ -33,10 +33,10 @@
               <span class="input-group-text text-white" style="min-height: 5rem" id="inputGroup-sizing-default">Describe</span>
             </div>
             <textarea type="text" id="validationCustom02" class="form-control" style="min-height: 5rem" aria-label="Default" aria-describedby="inputGroup-sizing-default" name="postbody" required></textarea>
-            <div class="valid-feedback">
+            <div class="valid-feedback" style="margin-top: 5rem;">
               Looks good! 
             </div>
-            <div class="invalid-feedback">
+            <div class="invalid-feedback" style="margin-top: 5rem;">
               You must describe your complaint
             </div>
           </div>
@@ -63,7 +63,13 @@
 
           <div class="input-group mb-5 ms-auto me-auto justify-content-between align-items-center" id="createpost-image-section" style="height: 13 rem;">
             <div class="d-flex flex-row h-25 ">
-              <input type="file" class="form-control" id="postformimage" aria-describedby="inputGroupFileAddon04" aria-label="Upload" accept=".jpg, .jpeg, .png" name="postimage" />
+              <input type="file" class="form-control" id="postformimage" aria-describedby="inputGroupFileAddon04" aria-label="Upload" accept=".jpg, .jpeg, .png" name="postimage" required/>
+              <div class="valid-feedback mt-5" style="margin-top: 5rem;">
+                Looks good! 
+              </div>
+              <div class="invalid-feedback mt-5" style="margin-top: 50px;">
+                Select the Visibility
+              </div>
               <button class="btn btn-outline-secondary text-white bg-danger" type="button" id="inputGroupFileAddon04">Remove</button>
             </div>
             <img src="" id="imagepreview" alt="no preview" style="height: 13rem; width: 17rem; border: 1px dashed whitesmoke; border-radius: 5px;">

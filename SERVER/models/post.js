@@ -22,10 +22,6 @@ const postSchema = new mongoose.Schema({
     visibility:{
         type: String
     },
-    status:{
-        type : String,
-        default:"unsolved"
-    },
     postedby:{
         type: mongoose.Schema.Types.ObjectId,
         ref:"userModel"

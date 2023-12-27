@@ -17,7 +17,7 @@
 <!-- ================================ ! HEADER FOR SHOWING ERROR MESSAGE ============================================= -->    
 
     <div style="width: 70%; min-height: 100vh;" class="mt-5">
-        <div class="container w-50 mt-3 d-flex flex-column align-items-center text-black admin-logo" style="height: 10rem">
+        <div class="container w-50 mt-3 d-flex flex-column align-items-center text-black admin-logo mt-5" style="height: 10rem">
             <div><i class="fa-solid fa-shield fa-5x fa-10x hover-overlay" style="color: #060067"></i></div>
             <div class="text-center position-absolute">
                 <h2 style="color: #9affe8"><%= adminUser.name %></h2>
@@ -25,16 +25,16 @@
             </div>
         </div>
         <form action="/logout" method="post" class="text-center mt-2"><button type="submit" class="btn btn-danger">Logout</button></form>
-        <div class="container mt-2 justify-content-between admin-add-button" style="height: 10rem; width: 100%;">
+        <div class="container mt-2 justify-content-between admin-add-button" style="height: 10rem; width: 60%;">
           <!-- ================== CONSTRAINTS ON NUMBER OF ADMINS, ACCCOUNTANTS AND CHIEF WARDEN =============== -->
             <% var adminState; if(allAdmin.length == 3){ adminState = "disabled" } %>
             <% var cwState; if(chiefWarden.length == 1){ cwState = "disabled" } %>
-            <% var accoutantState; if(allAccountant.length == 10){ accoutantState = "disabled" } %>
+            <!-- <% var accoutantState; if(allAccountant.length == 10){ accoutantState = "disabled" } %> -->
           <!-- ================== ! CONSTRAINTS ON NUMBER OF ADMINS, ACCCOUNTANTS AND CHIEF WARDEN =============== -->
 
             <button class="btn btn-lg w-50 me-1 mb-1 btn-info rolebutton" value="admin" onclick="showsignuppopup(this)" <%= adminState %>>Add admin</button>
             <button class="btn btn-lg w-50 me-1 mb-1 btn-info rolebutton" value="chiefwarden" onclick="showsignuppopup(this)" <%= cwState %>>Add Chief warden</button>
-            <button class="btn btn-lg w-50 me-1 mb-1 btn-info rolebutton" value="accountant" onclick="showsignuppopup(this)" <%= accoutantState %>>Add accountant</button>
+            <!-- <button class="btn btn-lg w-50 me-1 mb-1 btn-info rolebutton" value="accountant" onclick="showsignuppopup(this)" <%= accoutantState %>>Add accountant</button> -->
 
 <!-- =================== SIGN UP MODAL FOR ADMIN, CHIEF WARDEN AND ACCOUNTANT ========================= -->
             <div class="modal text-center mt-5" tabindex="-1" id="showsignuppopupbox">
@@ -373,7 +373,7 @@
                                           <p>By removing user all the account related information will be permanently deleted</p>
                                         </div>
                                         <div class="modal-footer">
-                                          <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal" onclick="removepopup()">Cancel</button>
+                                          <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal" value="<%= k %>" onclick="removepopup(this)">Cancel</button>
                                           <button class="btn btn-danger" type="submit">Confirm</button>
                                           <% k++; %>
                                         </div>
